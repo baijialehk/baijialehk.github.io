@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>百家乐形态记忆库 - 备份/还原/查看</title>
+    <style>
+        body { background:#0a0a0a; color:#ddd; font-family:monospace; max-width:900px; margin:5px auto; padding:5px 0 10px 0;}
+        button { background:#8b5cf6; color:#fff; border:none; padding:8px 16px; margin:4px 2px; border-radius:4px; cursor:pointer; font-size:0.8rem; }
+        button.green { background:#2ecc71; }
+        button.red { background:#e74c3c; }
+        button.blue { background:#3498db; }
+        textarea { width:100%; height:500px; background:#1a1a1a; color:#ddd; border:1px solid #333; margin-top:8px; font-size:0.7rem; }
+        .info { color:#999; font-size:0.75rem; margin-top:4px; }
+        hr { border-color:#333; margin:16px 0; }
+        .tab-row { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+        .tab { padding:6px 12px; background:#1a1a1a; border:1px solid #333; border-radius:4px; cursor:pointer; color:#999; font-size:0.8rem; }
+        .tab.active { background:#8b5cf6; color:#fff; border-color:#8b5cf6; }
+        .panel { display:none; }
+        .panel.active { display:block; }
+        .btn-row { margin-bottom:6px; }
+    </style>
+</head>
+<body>
+    <h2>🀄 百家乐大数据记忆库</h2>
+
+    <div class="tab-row">
+        <button class="tab active" onclick="switchTab('A')">A两局点数</button>
+        <button class="tab" onclick="switchTab('B')">B牌面记忆</button>
+        <button class="tab" onclick="switchTab('C')">C四列大路</button>
+        <button class="tab" onclick="switchTab('D')">D三局点数</button>
+        <button class="tab" onclick="switchTab('E')">E小路形态</button>
+        <button class="tab" onclick="switchTab('F')">F三珠三三</button>
+		<button class="tab" onclick="switchTab('G')">G追踪信号</button>
+		<button class="tab" onclick="switchTab('H')">H二次三维</button>
+		<button class="tab" onclick="switchTab('I')">I前局玄点</button>
+    </div>
+
+    <div id="panel-A" class="panel active">
+        <div class="btn-row">
+            <!-- <button class="green" onclick="generatePreset()">⚡ 生成预置记忆库 (5184条)</button> -->
+            <button onclick="downloadBackup('A')">📥 下载</button>
+            <button onclick="loadBackup('A')">📤 还原</button>
+            <button class="red" onclick="clearMemory('A')">🗑 清空</button>
+        </div>
+        <textarea id="preview-A" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-A"></div>
+    </div>
+
+    <div id="panel-B" class="panel">
+        <div class="btn-row">
+            <button onclick="downloadBackup('B')">📥 下载</button>
+            <button onclick="loadBackup('B')">📤 还原</button>
+            <button class="red" onclick="clearMemory('B')">🗑 清空</button>
+        </div>
+        <textarea id="preview-B" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-B"></div>
+    </div>
+
+    <div id="panel-C" class="panel">
+        <div class="btn-row">
+            <button onclick="downloadBackup('C')">📥 下载</button>
+            <button onclick="loadBackup('C')">📤 还原</button>
+            <button class="red" onclick="clearMemory('C')">🗑 清空</button>
+        </div>
+        <textarea id="preview-C" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-C"></div>
+    </div>
+
+    <div id="panel-D" class="panel">
+        <div class="btn-row">
+            <button onclick="downloadBackup('D')">📥 下载</button>
+            <button onclick="loadBackup('D')">📤 还原</button>
+            <button class="red" onclick="clearMemory('D')">🗑 清空</button>
+        </div>
+        <textarea id="preview-D" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-D"></div>
+    </div>
+
+    <div id="panel-E" class="panel">
+        <div class="btn-row">
+            <button onclick="downloadBackup('E')">📥 下载</button>
+            <button onclick="loadBackup('E')">📤 还原</button>
+            <button class="red" onclick="clearMemory('E')">🗑 清空</button>
+        </div>
+        <textarea id="preview-E" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-E"></div>
+    </div>
+
+    <div id="panel-F" class="panel">
+        <div class="btn-row">
+            <button onclick="downloadBackup('F')">📥 下载</button>
+            <button onclick="loadBackup('F')">📤 还原</button>
+            <button class="red" onclick="clearMemory('F')">🗑 清空</button>
+        </div>
+        <textarea id="preview-F" readonly placeholder="暂无数据..."></textarea>
+        <div class="info" id="info-F"></div>
+    </div>
+	
+	<div id="panel-G" class="panel">
+    <div class="btn-row">
+        <button onclick="downloadBackup('G')">📥 下载</button>
+        <button onclick="loadBackup('G')">📤 还原</button>
+        <button class="red" onclick="clearMemory('G')">🗑 清空</button>
+    </div>
+    <textarea id="preview-G" readonly placeholder="暂无数据..."></textarea>
+    <div class="info" id="info-G"></div>	
+    </div>	
+	
+	<div id="panel-H" class="panel">
+    <div class="btn-row">
+        <button onclick="downloadBackup('H')">📥 下载</button>
+        <button onclick="loadBackup('H')">📤 还原</button>
+        <button class="red" onclick="clearMemory('H')">🗑 清空</button>
+    </div>
+    <textarea id="preview-H" readonly placeholder="暂无数据..."></textarea>
+    <div class="info" id="info-H"></div>	
+    </div>	
+	
+	<div id="panel-I" class="panel">
+    <div class="btn-row">
+        <button onclick="downloadBackup('I')">📥 下载</button>
+        <button onclick="loadBackup('I')">📤 还原</button>
+        <button class="red" onclick="clearMemory('I')">🗑 清空</button>
+    </div>
+    <textarea id="preview-I" readonly placeholder="暂无数据..."></textarea>
+    <div class="info" id="info-I"></div>	
+    </div>	
+
+    <input type="file" id="restoreFile" accept=".txt" style="display:none;" onchange="restoreFromFile(event)">
+
+    <script>
+        const KEYS = {
+            A: 'baccarat_morph_memory',
+            B: 'baccarat_morph_cards',
+            C: 'baccarat_morph_bigroad4',
+            D: 'baccarat_morph_threepos',
+            E: 'baccarat_morph_smallroad',
+            F: 'baccarat_morph_diff',
+			G: 'baccarat_morph_gut',
+			H: 'baccarat_morph_enhanced',
+			I: 'baccarat_morph_meihua',
+        };
+
+        let currentTab = 'A';
+        let pendingRestore = null;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`panel-${tab}`).classList.add('active');
+            updatePreview();
+        }
+
+        function getMemory(type) {
+            try { return JSON.parse(localStorage.getItem(KEYS[type]) || '{}'); } catch(e) { return {}; }
+        }
+
+        function saveMemory(type, obj) {
+            localStorage.setItem(KEYS[type], JSON.stringify(obj));
+        }
+
+        function updatePreview() {
+            ['A','B','C','D','E','F','G','H','I'].forEach(type => {
+                const mem = getMemory(type);
+                const entries = Object.entries(mem).sort((a,b) => b[1].total - a[1].total);
+                const ta = document.getElementById(`preview-${type}`);
+                const info = document.getElementById(`info-${type}`);
+                if (!ta) return;
+                if (entries.length === 0) {
+                    ta.value = '暂无数据。';
+                    info.textContent = '';
+                    return;
+                }
+                const text = entries.map(([k,v]) => {
+				const streak = v.streak !== undefined ? ` | 连${v.streak > 0 ? '赢' : '输'}${Math.abs(v.streak)}` : '';
+				const rev = v.reverseCount > 0 ? ` | 反向剩余${v.reverseCount}局` : '';
+				return `${k} | 总${v.total}次 | B:${v.B}(${Math.round(v.B/v.total*100)}%) P:${v.P}(${Math.round(v.P/v.total*100)}%)${streak}${rev}`;
+				}).join('\n');
+                ta.value = text;
+                info.textContent = `共 ${entries.length} 条记录`;
+            });
+        }
+
+        function generatePreset() {
+            if (!confirm('将生成 5184 条预置记忆数据（B:1 P:1），现有A库数据会被覆盖。确定继续？')) return;
+            const cols = [];
+            for (const c of ['B','P']) { for (let h = 1; h <= 6; h++) { cols.push(c + h); } }
+            const guaDirs = ['B','P','X'];
+            const memory = {};
+            for (const a of cols) {
+                for (const b of cols) {
+                    for (const c of cols) {
+                        const k3 = a + '/' + b + '/' + c;
+                        for (const g of guaDirs) {
+                            memory[k3 + '|' + g] = { B: 1, P: 1, total: 2 };
+                        }
+                    }
+                }
+            }
+            saveMemory('A', memory);
+            updatePreview();
+            alert(`已生成 ${Object.keys(memory).length} 条预置记忆数据。`);
+        }
+
+        function downloadBackup(type) {
+            const mem = getMemory(type);
+            const blob = new Blob([JSON.stringify(mem, null, 2)], {type:'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `百家乐记忆库_${type}_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+        }
+
+        function loadBackup(type) {
+            pendingRestore = type;
+            document.getElementById('restoreFile').click();
+        }
+
+        function restoreFromFile(event) {
+            const file = event.target.files[0];
+            if (!file || !pendingRestore) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (typeof data !== 'object') throw new Error('格式错误');
+                    saveMemory(pendingRestore, data);
+                    updatePreview();
+                    alert(`还原成功！共 ${Object.keys(data).length} 条记录。`);
+                } catch(err) {
+                    alert('文件格式错误，请选择之前下载的备份文件。');
+                }
+            };
+            reader.readAsText(file);
+            pendingRestore = null;
+            event.target.value = '';
+        }
+
+        function clearMemory(type) {
+            if (confirm(`确定要清空${type}库吗？此操作不可恢复！`)) {
+                localStorage.removeItem(KEYS[type]);
+                updatePreview();
+            }
+        }
+
+        updatePreview();
+    </script>
+	        <div class="footer">
+            <nav style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+                <a href="index.html" style="color:#8b5cf6;">🏠 首页</a>
+                <!-- <a href="backup.html" style="color:#8b5cf6;">📚 库管理</a> -->
+                <a href="fapai.html" style="color:#8b5cf6;">🎰 发牌机</a>
+                <a href="setting.html" style="color:#8b5cf6;">⚙️ 配置页</a>
+            </nav>
+        </div>
+</body>
+</html>

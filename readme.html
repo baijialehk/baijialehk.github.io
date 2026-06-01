@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>百家乐智能辅助推演系统 | 民主决策 · 多维验证</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0c10;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Roboto', monospace;
+            color: #eef2ff;
+            line-height: 1.45;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 渐变标题区 */
+        .hero {
+            text-align: center;
+            margin-bottom: 0rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+            padding-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD966, #E0B0FF, #3B82F6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .hero .sub {
+            color: #9ca3af;
+            margin-top: 0.6rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .core-badge {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .core-badge span {
+            background: rgba(59,130,246,0.2);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(59,130,246,0.5);
+        }
+
+        /* 卡片风格 */
+        .card {
+            background: rgba(18, 22, 28, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            padding: 1.6rem 2rem;
+            margin-bottom: 2.2rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: rgba(255,200,100,0.3);
+            box-shadow: 0 25px 40px -14px black;
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+            border-left: 5px solid #F5B042;
+            padding-left: 1rem;
+        }
+
+        .card-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* 特点表格样式 (六大特点) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .feature-item {
+            background: #0f1117;
+            border-radius: 1.5rem;
+            padding: 1rem 1.2rem;
+            border-left: 3px solid #F5B042;
+        }
+
+        .feature-item strong {
+            color: #FFD966;
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #cbd5e6;
+        }
+
+        /* 表格样式用于记忆库和模块 */
+        .module-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .module-table th, .module-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .module-table th {
+            color: #FFD966;
+            font-weight: 600;
+            width: 25%;
+        }
+
+        .badge {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 2px 4px 2px 0;
+        }
+
+        .signal-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .signal-tag {
+            background: #1e2a3a;
+            border-radius: 24px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            color: #bbd7fb;
+            border: 1px solid #2c3e4e;
+        }
+
+        hr {
+            border-color: #2c2f36;
+            margin: 1rem 0;
+        }
+
+        .price-banner {
+            background: linear-gradient(95deg, #1f2a3e, #0b0e14);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            text-align: center;
+            border: 1px solid #f5b04260;
+            margin-top: 1rem;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #FACC15;
+        }
+
+        .btn-glow {
+            background: #f5b04220;
+            border: 1px solid #f5b042;
+            padding: 0.6rem 1.6rem;
+            border-radius: 40px;
+            color: #ffdf9c;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: inline-block;
+            transition: 0.2s;
+            cursor: default;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #5b6e8c;
+            margin-top: 2.5rem;
+            border-top: 1px solid #1f2a3a;
+            padding-top: 1.8rem;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .card { padding: 1.2rem; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+
+        .quote {
+            font-style: italic;
+            background: #0a0e14;
+            padding: 1rem;
+            border-radius: 1.2rem;
+            margin: 1rem 0;
+            color: #b9c7dd;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 主视觉 -->
+    <div class="hero">
+        <h1>♠️ 百家乐智能辅助推演系统 ♦️</h1>
+        <div class="core-badge">
+            <span>⚖️ 民主决策</span>
+            <span>📊 多维验证</span>
+            <span>🧠 动态学习</span>
+        </div>
+        <div class="sub">「理性玩家议会」—— 独立信号投票 · 经验触发灵感 · 一击即中</div>
+    </div>
+
+        <div class="core-badge">
+            <span>🏠 <a href="index.html" style="color:#FFF;text-decoration:none;" title="点击返回主页">进入推演系统主页</a></span>
+        </div>
+		
+    <!-- 核心理念描述 -->
+    <div class="card">
+        <div class="card-title"><span class="icon">🧠</span> 核心理念 · 议会制智能辅助</div>
+        <p style="margin-bottom: 12px;">系统模拟一个<strong class="text-yellow">“理性玩家议会”</strong>——众多预测信号各自独立判断，按权重投票，最终由决策者你决定方向。不依赖单一策略，不盲从固定规则，用数据说话，逻辑验证，经验修正。</p>
+        <p>系统是辅助你记忆回忆分析各种大路小路三珠路等形态的可能性，储存你的经验，智能化触发你的经验与灵感，在复杂多变的百家乐游戏中提高胜率。</p>
+    </div>
+
+    <!-- 六大核心特点 (表格风格但用现代卡片) -->
+    <div class="card">
+        <div class="card-title"><span class="icon">🎯</span> 六大核心特点</div>
+        <div class="features-grid">
+            <div class="feature-item"><strong>🗳️ 民主投票制</strong><div class="feature-desc">数十个预测信号独立判断，按票数决定最终方向，避免单一策略偏见。</div></div>
+            <div class="feature-item"><strong>💾 多维记忆库</strong><div class="feature-desc">9个独立大数据库(A~I)，从点数/牌面/大路/小路/差值/梅花等维度学习历史规律，百万局覆盖。</div></div>
+            <div class="feature-item"><strong>☯ 梅花易数推演</strong><div class="feature-desc">本卦、互卦、天时、地利、人和、牌色六维成卦，五数加权定方向，遇事不决触发灵感。</div></div>
+            <div class="feature-item"><strong>🤖 智能决策层</strong><div class="feature-desc">追踪连赢连输节奏，适时反向或跟注，模拟真实玩家临场操作，无需手动记忆。</div></div>
+            <div class="feature-item"><strong>📈 可视化路纸</strong><div class="feature-desc">大路、大眼仔、小路、曱甴路、三珠路、梅花易数、三大路共振实时显示。</div></div>
+            <div class="feature-item"><strong>⚙️ 灵活配置系统</strong><div class="feature-desc">每个信号独立开关，票数可调(0-9)，支持学习模式/反向模式/智能模式切换。</div></div>
+        </div>
+    </div>
+
+    <!-- 七大功能模块 (复杂内容分组) -->
+    <div class="card">
+        <div class="card-title"><span class="icon">⚡</span> 七大功能模块</div>
+        
+        <!-- 议会一组：大数据触发 (8记忆库) -->
+        <h3 style="margin: 1rem 0 0.6rem 0; color: #FFD966;">🏛️ 议会一组 · 大数据触发（8个记忆库）</h3>
+        <table class="module-table">
+            <thead><tr><th>记忆库</th><th>功能</th><th>记录维度</th></tr></thead>
+            <tbody>
+                <tr><td>A 库</td><td>两局点数记忆</td><td>近两局闲庄点数组合</td></tr>
+                <tr><td>B 库</td><td>牌面记忆</td><td>上局4张牌的牌面值(含10/J/Q/K)</td></tr>
+                <tr><td>C 库</td><td>四列大路记忆</td><td>近四列大路形态</td></tr>
+                <tr><td>D 库</td><td>三局总点数记忆</td><td>近三局双方点数之和序列</td></tr>
+                <tr><td>E 库</td><td>小路形态记忆</td><td>近三列小路形态</td></tr>
+                <tr><td>F 库</td><td>三珠三三记忆</td><td>三珠路近三组形态</td></tr>
+                <tr><td>H 库</td><td>二次三维点数</td><td>点数组合+差值序列+总和序列</td></tr>
+                <tr><td>I 库</td><td>前局玄点记忆</td><td>上局点数+梅花指向</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin: 1.5rem 0 0.6rem 0; color: #FFD966;">🎲 议会二组 · 实时信号触发 (40+形态识别)</h3>
+        <div class="signal-group">
+            <span class="signal-tag">单边龙</span><span class="signal-tag">痴痴连(单跳)</span><span class="signal-tag">单跳龙</span><span class="signal-tag">两房一厅</span><span class="signal-tag">三房一厅</span>
+            <span class="signal-tag">拍拍连预警</span><span class="signal-tag">对称夹心</span><span class="signal-tag">排排坐</span><span class="signal-tag">撑杆跳</span><span class="signal-tag">缩骨龙</span>
+            <span class="signal-tag">上坡路</span><span class="signal-tag">顶头锤</span><span class="signal-tag">逢庄连逢闲跳</span><span class="signal-tag">隔山打牛</span><span class="signal-tag">蜻蜓点水</span>
+        </div>
+        <div><span class="badge">下路信号</span> 大眼仔连续蓝点、小路三连红/三连蓝、小路断层、小路长红/长蓝、小路同向</div>
+        <div><span class="badge">三珠路信号</span> 三珠路正式/正夫反/反式 &nbsp;|&nbsp; <span class="badge">共振信号</span> 三大路共振、共振+梅花双重趋势</div>
+        <div><span class="badge">组合增强信号(12个)</span> 龙卦合鸣、上下背离、连断节奏、连小转势、牌型助长龙、大牌断龙、牌型强信号、小路形态顺龙、破顶、破乱、靴内差值跟大势</div>
+
+        <h3 style="margin: 1.5rem 0 0.6rem 0; color: #FFD966;">👤 议会三组 · 职业玩家直觉触发（智能决策层）</h3>
+        <div class="grid-2col" style="margin-bottom: 0.4rem;">
+            <div><span class="badge">连小转势</span> 三局双方点数差别小转势</div>
+            <div><span class="badge">龙断票近反转</span> 长龙断裂+票数接近 → 反向</div>
+            <div><span class="badge">票聚龙延加码</span> 票数一边倒+龙延续 → 跟注</div>
+            <div><span class="badge">靴尾差值明确</span> 后半靴+差值大+票数微弱 → 跟差值</div>
+            <div><span class="badge">对称夹心延续</span> 夹心形态 → 跟夹心</div>
+            <div><span class="badge">平票看连断</span> 平票+连断节奏 → 打破僵局</div>
+            <div><span class="badge">单跳与小路同向</span> 痴痴连+小路同向 → 跟跳</div>
+            <div><span class="badge">物极必反</span> 某边票数>90% → 反向</div>
+            <div><span class="badge">票少随机反向</span> 票差≤2随机反 → 变数</div>
+            <div><span class="badge">记忆连触回调</span> 记忆库连中≥2 → 反向</div>
+            <div><span class="badge">信号波动追踪</span> 追踪各信号连赢连输 → 反向/跟注</div>
+            <div><span class="badge">三三信号共振</span> 追踪记忆库与三珠路信号同向</div>
+        </div>
+
+        <h3 style="margin: 1.2rem 0 0.4rem 0; color: #E0B0FF;">☯ 梅花易数六维推演</h3>
+        <div class="quote">
+            <strong>定数(本卦)</strong> 牌面点数成卦 · <strong>变数(互卦)</strong> 本卦的二三四五爻 · <strong>天时</strong> 当前时辰五行 · 
+            <strong>地利</strong> 台号+座号总数五行 · <strong>人和</strong> 玩家本命八字五行 · <strong>牌色</strong> 6张牌红黑比例<br>
+            ✨ 动爻由秒级时间戳决定，天地人三才齐全。融合传统易理与现代算法——梅花易数2.0，在快速胜负中寻找良机。
+        </div>
+
+        <h3 style="margin: 1.2rem 0 0.4rem 0;">👑 决策者机制 · 民主统票</h3>
+        <p>庄闲票数统计，让玩家根据经验和临场选择方向。平票裁决: 依次按单边龙、梅花高信度、差值方向裁决。<br>
+        🎛️ 智能决策开关(连赢择机反向，连输跟注反弹) · 反向模式开关 · 学习模式开关(记录形态至记忆库)。</p>
+
+        <h3 style="margin: 1.2rem 0 0.4rem 0;">📚 记忆库管理系统 & 发牌机批量测试</h3>
+        <p>9个库独立查看、下载、还原、清空。每条记录显示总次数、庄闲比例、连赢连输状态。G库实时追踪信号波动。<br>
+        🧪 发牌机：Fisher-Yates多轮交错随机洗牌，批量跑靴统计胜率，盲测各信号独立命中率，追踪决策者连赢连输节奏。</p>
+    </div>
+
+    <!-- 使用目的与价值 + 核心理念总结 -->
+    <div class="card">
+        <div class="card-title"><span class="icon">🎰</span> 使用目的 · 价值哲学</div>
+        <div class="grid-2col">
+            <div>
+                <strong style="color:#FFD966;">✨ 对玩家</strong>
+                <ul style="margin-top: 8px; list-style-type: none; padding-left: 0;">
+                    <li>✓ 多维度参考，避免情绪化下注</li>
+                    <li>✓ 实时路纸和投票详情，决策透明</li>
+                    <li>✓ 智能模式辅助判断转折点</li>
+                    <li>✓ 系统随玩家经验越用越聪明</li>
+                </ul>
+            </div>
+            <div>
+                <strong style="color:#FFD966;">📐 对研究者</strong>
+                <ul style="margin-top: 8px; list-style-type: none; padding-left: 0;">
+                    <li>✓ 批量回测验证策略有效性</li>
+                    <li>✓ 独立信号命中率追踪，筛选有效指标</li>
+                    <li>✓ 记忆库积累真实牌局数据，持续优化</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="quote" style="background:#10131c;">
+            🧿 不以单一规则定输赢，而以多维共识求稳健。数据为基，逻辑为骨，直觉为翼，方能在随机中寻找秩序。<br>
+            每次出手都是独立事件，庄闲概率固定 ~50%，不会因为“这次多投了几票”就改变。系统只是帮你选时机，不是改概率。<br>
+            偶尔某副牌70%是运气，长期无限趋近50%是数学。能做的就是少出手、出好手，让好运覆盖坏运。<br>
+            <strong style="color:#FFD966;">本系统就是辅助你寻找出手时机，这一切辅助功能需要高级用户才能实现。</strong>
+        </div>
+    </div>
+
+    <!-- 会员升级区块 首批升级用户赠送终身会员 -->
+    <div class="price-banner">
+        <div style="font-size: 1.3rem; font-weight: 500;">🎲 解锁全维智能议会 · 成为高级用户</div>
+        <div style="margin: 12px 0;">现在仅需 <span class="price">¥498/年</span> (RMB)</div>
+        <div style="background: #f5b04220; display: inline-block; padding: 6px 18px; border-radius: 48px; margin: 10px 0; font-size: 0.9rem;">
+            🔥 首批升级用户 <strong>赠送终身会员</strong> + 全记忆库云端同步
+        </div>
+        <div class="btn-glow">⚡ 立即升级智能议会体验 ⚡</div>
+        <div style="font-size: 0.7rem; margin-top: 14px;">民主投票 | 多维记忆 | 梅花易数灵感 | 职业直觉层 | 路纸全解析</div>
+    </div>
+
+    <!-- 补充细节模块：独立信号独立权重以及动态学习展示 (更具沉浸感) -->
+    <div class="card">
+        <div class="card-title"><span class="icon">📡</span> 动态学习 · 信号波动追踪</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;">
+            <div style="flex:1; min-width: 180px;">
+                <div style="font-weight: bold; color:#FFD966;">🎯 票数权重可调</div>
+                <p style="font-size: 0.85rem;">每个信号独立开关，票数0-9自由配置，支持学习/反向/智能模式，实时切换决策风格。</p>
+            </div>
+            <div style="flex:1; min-width: 180px;">
+                <div style="font-weight: bold; color:#FFD966;">📈 连赢连输节奏记录</div>
+                <p style="font-size: 0.85rem;">智能决策层追踪各信号组合的连赢连输，在关键时刻触发“龙断票近反转”或“票聚龙延加码”。</p>
+            </div>
+            <div style="flex:1; min-width: 180px;">
+                <div style="font-weight: bold; color:#FFD966;">🌀 梅花易数实时成卦</div>
+                <p style="font-size: 0.85rem;">结合牌色+时辰+台号，动态生成卦象与动爻，为平票或模糊局势提供灵感触发。</p>
+            </div>
+        </div>
+        <hr>
+        <div style="font-size: 0.85rem; text-align: center; opacity:0.8;">⚙️ 系统集成“大路、大眼仔、小路、曱甴路、三珠路、共振显示”，所有推演结果以可视化路纸呈现，辅助你记忆成千上万局形态。</div>
+    </div>
+
+    <!-- 可视化路纸 示例表格风格 (纯静态展示形态) -->
+    <div class="card">
+        <div class="card-title"><span class="icon">📊</span> 可视化路纸监控面板 · 实时形态示意</div>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between;">
+            <div style="background:#0b0e14; border-radius: 24px; padding: 12px; flex:1;">
+                <div>🔴 大路趋势: 单跳龙延续 | 蓝点密集</div>
+                <div>🐉 单边龙: 庄龙4连 | 共振信号: 三大路共振+梅花同向</div>
+                <div>🟡 大眼仔: 连续蓝点 · 小路三连红</div>
+                <div>🔷 三珠路: 正式形态 (红红蓝) 近三组正夫反</div>
+            </div>
+            <div style="background:#0b0e14; border-radius: 24px; padding: 12px; flex:1;">
+                <div>🧿 梅花推演: 本卦「离」互卦「巽」动爻三爻</div>
+                <div>天时(酉金) 地利(土) 人和(木) 牌色(红多) → 建议关注「闲」向</div>
+                <div>当前票数统计: 庄 23票 | 闲 19票 | 平票裁决参照单边龙</div>
+            </div>
+        </div>
+        <div class="signal-group" style="margin-top: 1rem; justify-content: center;">
+            <span class="badge">智能模式激活</span>
+            <span class="badge">学习模式: 记录形态入库</span>
+            <span class="badge">反向模式待触发</span>
+            <span class="badge">记忆库命中率: 62.3%</span>
+        </div>
+    </div>
+
+    <!-- 最后附加工具说明: 各模块民主统票数据流 -->
+    <footer>
+        ⚡ 百家乐智能辅助推演系统 · 民主决策 · 多维验证 · 动态学习<br>
+        系统为辅助工具，请理性博彩，量力而行。所有功能基于历史统计和大数据模拟，不保证盈利。<br>
+        © 理性玩家议会 | 记忆库已累计模拟超百万局牌靴 | 梅花易数2.0易理引擎
+    </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            background:#1a1a2e; color:#e0e0e0; font-family:'Microsoft YaHei', sans-serif;
+            padding:20px; max-width:1200px; margin:0 auto;
+        }
+        h1 { text-align:center; color:#e0b000; margin-bottom:20px; }
+        .toolbar { 
+            display:flex; justify-content:space-between; align-items:center;
+            margin-bottom:15px; gap:10px; flex-wrap:wrap;
+        }
+        input, button, select { 
+            padding:8px 14px; border-radius:4px; border:1px solid #444; 
+            background:#16213e; color:#e0e0e0; font-size:14px;
+        }
+        button { cursor:pointer; background:#e0b000; color:#1a1a2e; border:none; font-weight:bold; }
+        button.danger { background:#c0392b; color:#fff; }
+        button:hover { opacity:0.8; }
+        table { 
+            width:100%; border-collapse:collapse; background:#16213e; 
+            border-radius:6px; overflow:hidden; 
+        }
+        th { 
+            background:#0f3460; color:#e0b000; padding:12px 10px; 
+            text-align:left; font-size:13px; 
+        }
+        td { padding:10px; border-bottom:1px solid #1a1a2e; font-size:13px; }
+        tr:hover { background:#1a1a3e; }
+        .level-input { 
+            width:50px; text-align:center; background:#1a1a2e; 
+            border:1px solid #555; color:#e0e0e0; border-radius:3px; padding:4px;
+        }
+        .pagination { 
+            display:flex; justify-content:center; align-items:center; 
+            gap:10px; margin-top:20px; 
+        }
+        .pagination button { padding:6px 16px; }
+        .pagination span { color:#e0b000; }
+        .status { 
+            position:fixed; top:20px; right:20px; padding:10px 20px; 
+            border-radius:4px; display:none; z-index:999; font-weight:bold;
+        }
+        .status.success { background:#27ae60; color:#fff; }
+        .status.error { background:#c0392b; color:#fff; }
+    </style>
+</head>
+<body>
+    <div class="status" id="status"></div>
+    <h1>🎰 用户管理</h1>
+    
+    <div class="toolbar">
+        <div>
+			<input type="text" id="searchInput" placeholder="搜索手机号...">
+			<button onclick="loadUsers(1)">搜索</button>
+			<button onclick="clearSearch()">清除</button>
+		</div>
+        <span style="color:#999;">总用户: <b id="totalCount" style="color:#e0b000;">0</b></span>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>手机号</th>
+                <th>Email</th>
+                <th>Level</th>
+                <th>操作</th>
+                <th>注册时间</th>
+                <th>ip</th>
+                <th>升级时间</th>
+                <th>No</th>
+                <!-- <th>删除</th> -->
+            </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+    </table>
+
+    <div class="pagination">
+        <button onclick="prevPage()">◀ 上一页</button>
+        <span id="pageInfo">第 1 页 / 共 1 页</span>
+        <button onclick="nextPage()">下一页 ▶</button>
+    </div>
+
+    <script>
+		const adminId = localStorage.getItem('bac_user_id') || '';
+		const adminPwd = localStorage.getItem('bac_user_pwd') || '';
+		if (!adminId) {
+			document.body.innerHTML = '<h2 style="text-align:center;color:red;margin-top:100px;">请先登录管理账号</h2>';
+			throw new Error('未登录');
+			//return;
+		}
+        const API_BASE = 'https://api.k9a8.com';
+        let currentPage = 1;
+        const pageSize = 30;
+        let totalPages = 1;
+
+        function showStatus(msg, type) {
+            const s = document.getElementById('status');
+            s.textContent = msg;
+            s.className = 'status ' + type;
+            s.style.display = 'block';
+            setTimeout(() => s.style.display = 'none', 2000);
+        }
+
+        async function loadUsers(page) {
+            currentPage = page || currentPage;
+            const search = document.getElementById('searchInput').value.trim();
+            
+            try {
+                //const url = `${API_BASE}/api/admin/users?page=${currentPage}&pageSize=${pageSize}`;
+				const url = `${API_BASE}/api/admin/users?page=${currentPage}&pageSize=${pageSize}&adminId=${adminId}&adminPwd=${adminPwd}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('加载失败');
+                const data = await res.json();
+                
+                const tbody = document.getElementById('userTableBody');
+                let filtered = data.users;
+                
+                // 前端搜索过滤
+                if (search) {
+                    filtered = data.users.filter(u => u.phone.includes(search));
+                }
+                
+                document.getElementById('totalCount').textContent = data.total;
+                totalPages = Math.ceil(data.total / pageSize);
+                document.getElementById('pageInfo').textContent = 
+                    `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;padding:30px;">暂无用户</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(u => `
+                    <tr>
+                        <td>${u.phone}</td>
+                        <td>${u.email}</td>
+                        <td>
+                            <input type="number" class="level-input" 
+                                   id="level_${u.phone}" value="${u.level}" min="0" max="999">
+                        </td>
+                        <td>
+                            <button onclick="updateLevel('${u.phone}')">修改</button>
+                        </td>
+                        <td>${u.rTime ? new Date(u.rTime).toLocaleString('zh-CN') : '早期用户'}</td>
+                        <td>${u.ip}</td>
+                        <td>${u.upTime ? new Date(u.upTime).toLocaleString('zh-CN') : '--'}</td>
+                        <td>${u.No}</td>
+                    </tr>
+                `).join('');
+                
+            } catch(e) {
+                showStatus('加载失败: ' + e.message, 'error');
+            }
+        }
+
+        async function updateLevel(phone) {
+            const input = document.getElementById('level_' + phone);
+            const level = input.value;
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/update`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    //body: JSON.stringify({ phone, level: parseInt(level) || 0 })
+					body: JSON.stringify({ phone, level: parseInt(level) || 0, adminId, adminPwd })
+                });
+                if (!res.ok) throw new Error('修改失败');
+                showStatus(`✅ ${phone} Level 已改为 ${level}`, 'success');
+            } catch(e) {
+                showStatus('修改失败: ' + e.message, 'error');
+            }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm(`确定删除用户 ${phone} 吗？此操作不可恢复！`)) return;
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, adminId, adminPwd })
+                });
+                if (!res.ok) throw new Error('删除失败');
+                showStatus(`✅ ${phone} 已删除`, 'success');
+                //loadUsers(currentPage);
+            } catch(e) {
+                showStatus('删除失败: ' + e.message, 'error');
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) loadUsers(currentPage - 1);
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) loadUsers(currentPage + 1);
+        }
+		
+		function clearSearch() {
+			document.getElementById('searchInput').value = '';
+			loadUsers(1);
+		}
+		
+        // 初始化
+        loadUsers(1);
+    </script>
+</body>
+</html>
