@@ -1,6 +1,6 @@
 /* ========= K9A8 Banner 组件样式（无冲突前缀） ========= */
-.k9a8-banner {	
-    font-family: 'Segoe UI', 'Poppins', 'Inter', 'Montserrat', system-ui, -apple-system, 'Roboto', sans-serif;
+.k9a8-banner {	    
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: linear-gradient(135deg, #0f121b 0%, #1a1e2c 100%);
     border-radius: 2.2rem;
     padding: 1.0rem 1rem;
