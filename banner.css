@@ -99,7 +99,7 @@
 .total-9 { background: #f5b042; color: #a33; padding: 0.2rem 1rem; border-radius: 60px; font-weight: 800; margin-left: 8px;  filter: drop-shadow(0 0 6px gold);}
 .tagline { font-size: 0.75rem; letter-spacing: 2px; color: #FFDEAD; margin-top: 8px; }
 .baccarat-aura { display: flex; gap: 1rem; align-items: center; z-index: 2;justify-content: space-between;}
-.invincible-saying { text-align: right; border-right: 2px solid #f5b04260; flex-wrap: nowrap;}
+.invincible-saying { text-align: right; border-right: 2px solid #f5b04260; flex-wrap: nowrap;padding-right:0.5rem;}
 .invincible-saying p { font-size: 0.8rem; color: #E5C28E; margin:0; }
 .invincible-saying .big-odds { font-size: 1.1rem; font-weight: 800; color: #FFD966; }
 .shiny-icon { font-size: 2.5rem; display: flex; align-items: center; filter: drop-shadow(0 0 6px gold);}
