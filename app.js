@@ -5,6 +5,7 @@
 // ==================== 系统密码 ====================
 var lastSubmitTime = 0;  //限制提交时间计时
 let diffTotal = 0;  // 追踪胜负差值用的
+var GUT_MEMORY = {}; // 全局变量G 库
 
 //=========配置追踪谁==========
 const TRACKED_SIGNALS = (() => {
@@ -250,7 +251,7 @@ function render(result) {
     // 最终判断
 	const finalEl = document.getElementById('final-judgment');
 	if (result.prediction) {
-		finalEl.innerHTML = `→<strong>${result.prediction === 'B' ? '🔴' : '🔵'}</strong> | 庄${result.votes?.B.length ?? 0}票 vs 闲${result.votes?.P.length ?? 0}票`;
+		finalEl.innerHTML = `${result.source?? ''}→${result.prediction === 'B' ? '🔴' : '🔵'} | 庄${result.votes?.B.length ?? 0}票 vs 闲${result.votes?.P.length ?? 0}票`;
 		finalEl.className = 'final-judgment ' + (result.prediction === 'B' ? 'red-bg' : 'blue-bg');
 	} else {
 		finalEl.innerHTML = `⚖️ 平票随机 | 庄${result.votes?.B.length ?? 0}票 vs 闲${result.votes?.P.length ?? 0}票`;
@@ -403,8 +404,6 @@ function submitResult() {
 			//console.log('赋值后立即查:', STATE.lastPlayerPoints);
     STATE.lastBankerPoints = bt;
     STATE.lastCardValue = lastCard;
-			//console.log('getMeihua调用: lastPlayerPoints:', STATE.lastPlayerPoints, 'lastBankerPoints:', STATE.lastBankerPoints, 'lastCardValue:', STATE.lastCardValue);
-    //STATE._lastMeihuaDirection = getMeihua(pt, bt, lastCard).direction;
 	
     // 记录原始牌面值（1-13），不做点数转换
 	STATE._playerFirstTwo = [p1, p2];
@@ -446,8 +445,6 @@ function submitResult() {
 	updateSmallRoadBigRoad();  //更新小路形态记忆
     getCockroachRoad(1);
 	
-    //const predResult = getPrediction();
-	
 		const lastEntry = STATE.history[STATE.history.length - 1];	//取最新的结果集合							
 		if (lastEntry) {			
 					
@@ -466,25 +463,20 @@ function submitResult() {
 				}
 				
 				const lastVotes = STATE._lastPredResult?.votes;				  
-				  /*  // --所有第三梯队的都在监控功能中 -- 应该用不上
-					// G库：记录赌徒直觉组合结果
+				    // --所有第2梯队的都在监控功能中 -- 应该用不上
+				/*	// G库：记录赌徒直觉组合结果
 				if (lastVotes) {
-					const tier3Votes = lastVotes.details.filter(v => v.tier === 3);   //-- 3 就是第3梯队 --2是与大路有关的各种形态
-					tier3Votes.forEach(v => {
+					const tierVotes = lastVotes.details.filter(v => v.tier === 2);   //-- 3 就是第3梯队 --2是与大路有关的各种形态
+					tierVotes.forEach(v => {
 						saveGutRecord(v.name, result);
 					});
-				}				
-				*/
+				}	*/			 
+				
 					// G库追踪：更新被追踪信号的连赢连输
 				if (lastVotes) { 
 					const allVotes = lastVotes.details;       // 上一局的投票集合 与 刚提交的牌(当前局)结果 写入库
-							//console.log('allVotes：'+allVotes);			
 					const actualResult = result;   //当前的结果
 					if (actualResult !== 'T') {
-						// 追踪决策者
-						if (STATE.pendingPrediction && STATE.pendingPrediction !== null) {
-							updateGutStreak('决策者', STATE.pendingPrediction, actualResult);
-						}
 						// 追踪其他信号
 						TRACKED_SIGNALS.forEach(name => {
 							if (name === '决策者') return;
@@ -496,9 +488,9 @@ function submitResult() {
 					}
 				}
 		}
-				//console.log('三珠组:', THREE_POS.groups);
-				//console.log('当前三珠:', THREE_POS.pending);
-	// 收集数据包
+				
+						//console.log('发送前bigRoad:', STATE.bigRoad);
+						
 	// 构建传给服务端的数据包
 	const serverInput = {
 		// 牌型
@@ -548,19 +540,23 @@ function submitResult() {
 			H: queryEnhancedMemory(),
 			I: queryMeihuaMemory()
 		},		
-		gutMemory: localStorage.getItem('baccarat_morph_gut') ? JSON.parse(localStorage.getItem('baccarat_morph_gut')) : {},  //整个G库内容传过去
+		gutMemory: GUT_MEMORY || {},  //整个G库全局变量内容传过去
+		winRateTrend: getWinRateTrend(),  //传递最近几轮的胜率计算过去
 		userId: localStorage.getItem('bac_user_id') || '',
 		userPwd: localStorage.getItem('bac_user_pwd') || '',
 	};
 		//console.trace('fetch 调用栈');
+	const injson = JSON.stringify(serverInput);
+	const compressed = pako.deflate(injson);
 	fetch('https://api.k9a8.com/api/predict', {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(serverInput)
+			//headers: { 'Content-Type': 'application/json' },
+			//body: JSON.stringify(serverInput)
+		headers: { 'Content-Type': 'application/json',  'Content-Encoding': 'deflate'	},
+		body: compressed
 	})
 	.then(response => {
 		if (!response.ok) {
-			//throw new Error('服务端返回错误: ' + response.status);
 				showStatus.textContent = ' 🔶服务端返回错误: '+ response.status + ' 请检查网络';
 		}
 		return response.json();
@@ -586,19 +582,26 @@ function submitResult() {
 						}
 		
 		STATE._lastPredResult = predResult;
+		STATE.bigRoad = predResult.serverBigRoad;  //服务端返回的大路覆盖本地的
+						//console.log('接收覆盖后bigRoad:', STATE.bigRoad);
 		
-		var pred2 = STATE._lastPredResult;  //----给发牌机用的变量------
 		// ... 全部保留 ...
-			loadView.style.display = 'none';  //隐藏等待画面，恢复界面	
-						//console.log('✅ 服务端计算成功:', predResult.prediction, predResult.source);
-			showStatus.textContent = ' ✅ 结果计算成功 ';
+			loadView.style.display = 'none';  //隐藏等待画面，恢复界面
+				//如果result的error不为false就是有错误
+				if (predResult.error) {
+					showStatus.textContent = ' ❌出错！' + predResult.error ;
+					alert('❌大路错乱被污染！' + predResult.error);
+					return;
+				} else {	
+					showStatus.textContent = ' ✅ 结果计算成功 ';
+				}
+				
 			render(predResult);
 	})
 	.catch(err => {
 				loadView.style.display = 'none';  //隐藏等待画面，恢复界面	
 				showStatus.textContent = ' 🔶远端调用失败: ' + err + ' 请检查网络';
-			//console.error('🔶服务端调用失败，回退本地计算:', err);		
-					//render(predResult);
+					alert(' 🔶远端调用失败: ' + err + ' 请检查网络');
 	});
 	
 }
@@ -778,20 +781,48 @@ function queryDiffMemory() {
 }
 
 
-// ==================== G库：赌徒直觉组合记忆 ====================
-const MORPH_GUT_KEY = 'baccarat_morph_gut';
+// ==================== G库全局变量：赌徒直觉组合记忆 ====================
 function saveGutRecord(comboKey, result) {
     if (!comboKey || !result || result === 'T') return;
+    if (!GUT_MEMORY[comboKey]) GUT_MEMORY[comboKey] = { B: 0, P: 0, total: 0 };
+    GUT_MEMORY[comboKey][result]++;
+    GUT_MEMORY[comboKey].total++;	
+			//console.log('G库:', GUT_MEMORY[comboKey]);
+}
 
-    let memory = {};
-    try {
-        const saved = localStorage.getItem(MORPH_GUT_KEY);
-        if (saved) memory = JSON.parse(saved);
-    } catch(e) {}
-    if (!memory[comboKey]) memory[comboKey] = { B: 0, P: 0, total: 0 };
-    //if (memory[comboKey].total >= 99) return;
-    memory[comboKey][result]++; memory[comboKey].total++;
-    localStorage.setItem(MORPH_GUT_KEY, JSON.stringify(memory));
+
+const MORPH_GUT_KEY = 'baccarat_morph_gut';
+    //G库 计算最近 5 - 9 轮的总胜率
+function getWinRateTrend() {
+    const gut = JSON.parse(localStorage.getItem(MORPH_GUT_KEY) || '{}');
+    const rates = gut._shoeRates;
+    if (!rates || rates.length < 5) return null;
+    
+    let bestHint = null;
+    let bestDiff = 0;
+    
+    [5, 6, 7, 8, 9].forEach(n => {
+        if (rates.length < n) return;
+        const recent = rates.slice(-n);
+        let totalGames = 0, totalHits = 0;
+        recent.forEach(r => { totalGames += r.games; totalHits += r.hits; });
+        const rate = Math.round(totalHits / totalGames * 100);
+        const diff = Math.abs(rate - 50);
+        
+        if (diff > bestDiff && diff >= 5) {
+            bestDiff = diff;
+            bestHint = {
+                rounds: n,
+                totalGames: totalGames,
+                rate: rate,
+                direction: rate > 50 ? '偏高' : '偏低',
+                hint: rate > 60 ? ' 近' + n + '轮胜率' + rate + '%，可能回调' :
+                      rate < 40 ? ' 近' + n + '轮胜率' + rate + '%，可能反弹' : null
+            };
+        }
+    });
+    
+    return bestHint;
 }
 
 // ==================== H库：两局点数记忆增强版 ====================
@@ -840,14 +871,9 @@ function queryEnhancedMemory() {
 //-----共用G库-------------
 function updateGutStreak(signalName, predictedDir, actualResult) {
     if (!signalName || !predictedDir || actualResult === 'T') return;
-    let memory = {};
-    try {
-        const saved = localStorage.getItem(MORPH_GUT_KEY);
-        if (saved) memory = JSON.parse(saved);
-    } catch(e) {}
-    if (!memory[signalName]) memory[signalName] = { B: 0, P: 0, total: 0, streak: 0, reverseCount: 0 };
+    if (!GUT_MEMORY[signalName]) GUT_MEMORY[signalName] = { B: 0, P: 0, total: 0, streak: 0, reverseCount: 0 };
     
-    const record = memory[signalName];
+    const record = GUT_MEMORY[signalName];
     record.total++;
     record[actualResult]++;
     
@@ -859,36 +885,20 @@ function updateGutStreak(signalName, predictedDir, actualResult) {
     }
     
     if (record.reverseCount > 0) record.reverseCount--;
-    
-    localStorage.setItem(MORPH_GUT_KEY, JSON.stringify(memory));
+	
+    //console.log('G库222:', GUT_MEMORY);
 }
 
 function queryGutStreak(signalName) {
     if (!signalName) return null;
-    let memory = {};
-    try {
-        const saved = localStorage.getItem(MORPH_GUT_KEY);
-        if (saved) memory = JSON.parse(saved);
-    } catch(e) { return null; }
-    const record = memory[signalName];
+	const record = GUT_MEMORY[signalName];
     if (!record || record.total < 3) return null;
-    
     if (record.reverseCount > 0) {
         return record.streak >= 4 ? 'reverse' : (record.streak <= -4 ? 'follow' : null);
     }
-    //连赢次数
-    if (record.streak >= 4) {
-        record.reverseCount = 2;   //反它多少次
-        localStorage.setItem(MORPH_GUT_KEY, JSON.stringify(memory));
-        return 'reverse';
-    }
-	  //连输次数
-    if (record.streak <= -4) {
-        record.reverseCount = 2;   //跟它多少次
-        localStorage.setItem(MORPH_GUT_KEY, JSON.stringify(memory));
-        return 'follow';
-    }
-    return null;
+    if (record.streak >= 4) { record.reverseCount = 2; return 'reverse'; }
+    if (record.streak <= -4) { record.reverseCount = 2; return 'follow'; }
+    return null;	
 }
 
 //========I库 前局玄点记忆 =======
@@ -919,9 +929,17 @@ function resetAll() {
     const isIndex = !!document.getElementById('btn-submit');
 	
     // 保存上一轮胜率
-    if (STATE.totalPredictions > 0) {
-        STATE.lastShoePct = Math.round((STATE.totalHits / STATE.totalPredictions) * 100);
-    }
+    if (STATE.totalPredictions >= 30) {
+		let gut = JSON.parse(localStorage.getItem('baccarat_morph_gut') || '{}');
+		if (!gut._shoeRates) gut._shoeRates = [];
+		gut._shoeRates.push({
+			games: STATE.totalPredictions,
+			hits: STATE.totalHits,
+			rate: Math.round((STATE.totalHits / STATE.totalPredictions) * 100)
+		});
+		if (gut._shoeRates.length > 20) gut._shoeRates.shift();
+		localStorage.setItem('baccarat_morph_gut', JSON.stringify(gut));
+	}
 	
     // ===== 数据层面：所有页面共用，全部清空 =====
     STATE.bigRoad = [];
@@ -950,9 +968,8 @@ function resetAll() {
     THREE_POS.groups = [];
     THREE_POS.pending = [];
 	STATE.cardColors = null;
-	localStorage.removeItem(MORPH_GUT_KEY);  //追踪其他信号，每轮清空G库
-	//localStorage.removeItem("baccarat_morph_gut");  //追踪其他信号，每轮清空G库
     diffTotal = 0;
+	GUT_MEMORY = {};
     saveState();
 
     // ===== 界面层面：只有 index.html 才操作 DOM =====
@@ -998,13 +1015,17 @@ function init() {
     // =========== 密码登录验证 ====================
 	var userId = localStorage.getItem('bac_user_id');
 	const showStatus = document.getElementById('vote-detail');  //显示各种提示和投票详情
+	const loginStatus = document.getElementById('login-status');  //显示登陆注册的提示	
 	const loadView = document.getElementById('loading-overlay');  // 连接等待返回画面
 		
-	document.getElementById('btn-login').addEventListener('click', function() {		
-		loadView.style.display = 'flex';   //显示等待画面
+	document.getElementById('btn-login').addEventListener('click', function() {
 		var phone = document.getElementById('login-phone').value.trim();
 		var pwd = document.getElementById('login-pwd').value.trim();
-		if (!phone || !pwd) return;
+		if (!phone || !pwd) { loginStatus.textContent = '❌ ' +  '手机号码和密码请填写正确'; return; }		
+		if (!/^\d{1,11}$/.test(phone) || phone.length < 6 || phone.length > 11) { loginStatus.textContent = '❌ ' +  '请填写纯数字手机号码，最多11位'; return; }
+		if (pwd.length < 6 || pwd.length > 25) { loginStatus.textContent = '❌ ' +  '密码需要6-25位';	return; }
+		
+		loadView.style.display = 'flex';   //显示等待画面
 		
 		fetch('https://api.k9a8.com/api/login', {
 			method: 'POST',
@@ -1022,7 +1043,7 @@ function init() {
 				document.getElementById('logonOK').innerHTML = '已登录: ' + userId + ' <a href="#" onclick="logout()" style="color:#8b5cf6; margin-left:8px;">退出</a>';
 				startApp();
 			} else {
-				document.getElementById('login-status').textContent = '❌ ' + (data.error || ' 登录失败,请检查输入是否正确');
+				loginStatus.textContent = '❌ ' + (data.error || ' 登录失败,请检查输入是否正确');
 			}
 			
 			loadView.style.display = 'none';   //关闭等待画面
@@ -1030,15 +1051,18 @@ function init() {
 	});
 	
 	document.getElementById('btn-register').addEventListener('click', function() {
-		
-		loadView.style.display = 'flex';   //显示等待画面
-		//e.preventDefault();  //--限制重复提交		
 		var phone = document.getElementById('login-phone').value.trim();
 		var email = document.getElementById('login-email').value.trim();
 		var pwd = document.getElementById('login-pwd').value.trim();
 		var pwd2 = document.getElementById('login-pwd2').value.trim();
-		if (!phone || !email || !pwd || !pwd2) return;
-		if (pwd !== pwd2) { document.getElementById('login-status').textContent = '❌ 两次密码不一致'; return; }
+		if (!phone || !email || !pwd || !pwd2) { loginStatus.textContent = '❌ ' +  '四个框都请填写正确';	return; }
+		if (!/^\d{1,11}$/.test(phone) || phone.length < 6 || phone.length > 11) {	loginStatus.textContent = '❌ ' +  '请填写纯数字手机号码，最多11位';	return; }
+		if (pwd.length < 6 || pwd.length > 25) { loginStatus.textContent = '❌ ' +  '密码需要6-25位';	return; }
+		const emailRegex = /^[a-zA-Z0-9._%+-]{1,20}@(qq|163|126|gmail|hotmail|sina|yahoo)\.(com|com\.cn|cn|net|com\.hk|hk)$/;
+		if (!emailRegex.test(email)) { loginStatus.textContent = '❌ ' +  'Email格式不正确,仅支持qq.com、163、126、gmail、hotmail、sina、yahoo，@前最多20位';	return; }
+		if (pwd !== pwd2) { loginStatus.textContent = '❌ 两次密码不一致'; return; }
+		
+		loadView.style.display = 'flex';   //显示等待画面
 		
 		fetch('https://api.k9a8.com/api/register', {
 			method: 'POST',
@@ -1048,9 +1072,9 @@ function init() {
 		.then(r => r.json())
 		.then(data => {
 			if (data.success) {
-				document.getElementById('login-status').textContent = '✅ -- 注册成功！请直接登录 --';
+				loginStatus.textContent = '✅ -- 注册成功！请直接登录 --';
 			} else {
-				document.getElementById('login-status').textContent = '❌ ' + (data.error || '注册失败,请检查输入是否正确');
+				loginStatus.textContent = '❌ ' + (data.error || '注册失败,请检查输入是否正确');
 			}
 			
 			loadView.style.display = 'none';   //关闭等待画面
@@ -1146,6 +1170,7 @@ function init() {
 			THREE_POS.pending = [];
 			STATE.cardColors = null;
 			diffTotal = 0;
+			GUT_MEMORY = {};
 			saveState();
 
 			// 绑定事件

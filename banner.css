@@ -1,0 +1,127 @@
+/* ========= K9A8 Banner 组件样式（无冲突前缀） ========= */
+.k9a8-banner {
+    background: linear-gradient(135deg, #0f121b 0%, #1a1e2c 100%);
+    border-radius: 2.2rem;
+    padding: 1.0rem 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid rgba(255, 200, 80, 0.35);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0rem;
+}
+.k9a8-banner::before {
+            content: "♠ ♥ ♣ ♦";
+            font-size: 9rem;
+            position: absolute;
+            bottom: 0px;
+            right: 30px;
+            opacity: 0.03;
+            font-family: monospace;
+            pointer-events: none;
+            letter-spacing: 0px;
+            color: #ffd966;
+        }
+.brand-core {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    z-index: 2;
+}
+.domain-magic {
+    display: flex;
+    align-items: baseline;
+    background: rgba(0,0,0,0.44);
+    padding: 0.1rem 1.0rem 0.3rem 1.5rem;
+    border-radius: 100px;
+    border-left: 4px solid #F5B042;
+}
+.domain {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFE6B0, #FFBF60, #F5A623);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.domain-tld {
+    font-size: 1.8rem;
+    font-weight: 600;
+    background: linear-gradient(145deg, #C0A56B, #F5D98F);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-left: 6px;
+}
+.badge-9point {
+    background: #F5B04220;
+    border: 1px solid #F5B042;
+    border-radius: 60px;
+    padding: 0.2rem 1rem;
+    font-size: 0.85rem;
+    color: #FFDFA5;
+    white-space: nowrap;
+	margin: 0.1rem auto;
+}
+.winning-meaning {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.45);
+    padding: 0.5rem 1.2rem;
+    border-radius: 3rem;
+    border: 1px solid rgba(245,176,66,0.4);
+	width: fit-content;
+	max-width: 100%;
+	margin: 0.8rem auto; 
+}
+.hand-demo {
+	font-family: 'Courier New', monospace;
+	font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: bold;
+}
+.cardLogo {
+    color: #222;
+    background: #fff1e0;
+    padding: 0.2rem 0.9rem;
+    border-radius: 12px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    box-shadow: 0 6px 0 #b97f2e;
+    display: inline-block;
+	transform: rotate(-3deg);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-symbol {
+	font-size: 1.5rem;
+	margin: 0 0.2rem;
+    color: #000;	
+	filter: drop-shadow(0 0 4px rgba(245,176,66,0.5));
+}
+
+.cardLogo.diamond { color: #c73f1e; }
+.cardLogo.heart { color: #da2c3d; }
+.cardLogo:hover { transform: translateY(-3px) rotate(0deg); box-shadow: 0 8px 0 #b97f2e; }
+.plus-sign { font-size: 1.8rem; font-weight: 800; color: #FFD966; }
+.total-9 { background: #f5b042; color: #a33; padding: 0.2rem 1rem; border-radius: 60px; font-weight: 800; margin-left: 8px;  filter: drop-shadow(0 0 6px gold);}
+.tagline { font-size: 0.75rem; letter-spacing: 2px; color: #FFDEAD; margin-top: 8px; }
+.baccarat-aura { display: flex; gap: 1rem; align-items: center; z-index: 2;justify-content: space-between;margin:0 1rem;}
+.invincible-saying { text-align: right; border-right: 2px solid #f5b04260; padding-right: 1rem; }
+.invincible-saying p { font-size: 0.8rem; color: #E5C28E; margin:0; }
+.invincible-saying .big-odds { font-size: 1.1rem; font-weight: 800; color: #FFD966; }
+.shiny-icon { font-size: 2.5rem; display: flex; align-items: center; filter: drop-shadow(0 0 6px gold);}
+.feature-text-list p { font-size: 0.7rem; color: #f0e6d2; white-space: nowrap; margin:0;letter-spacing: 0.5px; }
+@media (max-width: 850px) {
+    .k9a8-banner { flex-direction: column; align-items: stretch; padding: 1rem; }
+    .brand-core { justify-content: left; }
+    .winning-meaning { align-self: center; }
+    .domain { font-size: 2rem; }
+    .domain-tld { font-size: 1.4rem; }
+    .hand-demo .cardLogo { font-size: 1.2rem; padding: 0.1rem 0.6rem; }
+    .plus-sign { font-size: 1.2rem; }	
+    .k9a8-banner::before { font-size: 7rem; left: 0;bottom:0; }
+}
