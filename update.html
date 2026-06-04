@@ -8,7 +8,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 	<link rel="manifest" href="site.webmanifest">
     <style>
-        body { background:#0a0a0a; color:#ddd; font-family:monospace; max-width:600px; margin:40px auto; padding:20px; text-align:center; }
+        body { background:#0a0a0a; color:#ddd; font-family:monospace; max-width:600px; margin:20px auto; padding:5px; text-align:center; }
         button { background:#8b5cf6; color:#fff; border:none; padding:12px 28px; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700; }
         button:hover { filter:brightness(1.2); }
         #progress-bar { width:100%; height:24px; background:#333; border-radius:12px; margin-top:16px; display:none; overflow:hidden; }
@@ -16,12 +16,51 @@
         .info { color:#999; font-size:0.85rem; margin-top:8px; }
         a { color:#8b5cf6; display:block; margin-top:20px; }
     </style>
+    <link href="banner.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+
+	<!-- K9A8 Banner 组件 -->
+	<div class="k9a8-banner">
+		<div class="brand-core">
+			<div class="domain-magic">
+				<span class="domain">k9A8</span><span class="domain-tld">.com</span>
+                <span class="card-symbol">♠️</span>
+			</div>
+			<div class="badge-9point">✦ 百家乐Ai智能辅助推演系统 ✦</div>
+		</div>
+		<div class="winning-meaning">
+			<div class="hand-demo">
+				<span class="cardLogo diamond">K♦</span>
+				<span class="cardLogo">9♠</span>
+				<span class="plus-sign">+</span>
+				<span class="cardLogo heart">A♥</span>
+				<span class="cardLogo">8♣</span>
+				<span class="total-9">Win</span>
+			</div>
+			<div class="tagline">🔮 至尊9点 · 稳操胜券的终极信仰 🔮</div>
+		</div>
+		<div class="baccarat-aura">
+			<div class="invincible-saying">
+				<p class="big-odds">⚡ 传奇天牌镇场 ⚡</p>
+				<p>每一局都承载必胜信念</p>
+				<p style="font-size:0.7rem;opacity:0.7;">唯九不败 · 财运自来</p>
+			</div>
+			<div class="shiny-icon">
+				🃏
+				<div class="feature-text-list">
+					<p>✓ 梅花易数2.0引擎</p>
+					<p>✓ 60+智能信号</p>
+					<p>✓ 8大记忆库储备</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
     <h2 style="font-size:14pt;color: #f0c060; ">📥 大数据更新</h2>
     <button onclick="startUpdate()" title="点击即会自动安装">🔄 安装百万牌局记忆库</button>
     <div id="progress-bar"><div id="progress-fill"></div></div>
-    <div class="info" id="progress-text">* 仅高级用户可以安装</div>
+    <div class="info" id="progress-text">* 普通用户只有两个记忆数据库试用，高级用户可以安装8大记忆库</div>
     <a href="index.html">← 返回首页</a> <a href="setting.html">配置页</a>
 
     <script>
