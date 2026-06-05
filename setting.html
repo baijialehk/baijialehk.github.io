@@ -329,6 +329,10 @@
 		const confirmPwd = document.getElementById('confirmPassword').value;
 		const status = document.getElementById('pwdStatus');
 
+        if (!userId) {
+            status.textContent = '❌ 请先在首页登录';
+            return;
+        }
 		if (!oldPwd || !newPwd || !confirmPwd) {
 			status.textContent = '❌ 请填写所有密码字段';
 			status.style.color = '#e74c3c';
@@ -344,10 +348,6 @@
 			status.style.color = '#e74c3c';
 			return;
 		}
-        if (!userId) {
-            status.textContent = '❌ 请先在首页登录';
-            return;
-        }		
 			document.getElementById('loading-overlay').style.display = 'flex';   //显示等待画面
 
 		try {

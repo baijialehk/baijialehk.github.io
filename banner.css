@@ -1,4 +1,4 @@
-/* ========= K9A8 Banner 组件样式（无冲突前缀） ========= */
+
 .k9a8-banner {	    
     font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     background: linear-gradient(135deg, #0f121b 0%, #1a1e2c 100%);
@@ -25,6 +25,9 @@
     padding: 0.1rem 1.0rem 0.3rem 1.5rem;
     border-radius: 100px;
     border-left: 4px solid #F5B042;
+}
+.domain-magic a {
+	text-decoration:none;
 }
 .domain {
     font-size: 2rem;
