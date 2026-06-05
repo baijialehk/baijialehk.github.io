@@ -366,7 +366,7 @@
 				status.textContent = '✅ ' + data.msg;
 				status.style.color = '#27ae60';
 				// 更新本地存储的密码哈希
-				localStorage.setItem('bac_user_pwd', hashPassword(newPwd));
+				localStorage.setItem('bac_user_pwd', data.newPwdHash);
 				document.getElementById('oldPassword').value = '';
 				document.getElementById('newPassword').value = '';
 				document.getElementById('confirmPassword').value = '';
