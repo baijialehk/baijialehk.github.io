@@ -25,7 +25,7 @@
         .pwd input { width:150px; }
         button { background:#8b5cf6; color:#fff; border:none; padding:10px 15px; border-radius:6px; cursor:pointer; font-weight:700; margin:8px 2px; }
         button.green { background:#2ecc71; }
-        .info { color:#999; font-size:0.75rem; margin-top:8px; }
+        .info { color:#999; font-size:0.85rem; margin-top:8px; }
         a { color:#8b5cf6; }
     </style>
 </head>
@@ -90,7 +90,7 @@
     <div class="row">
         <label></label>
         <button onclick="changePassword()">修改密码</button>
-        <span id="pwdStatus" style="margin-left:10px;"></span>
+        <span id="pwdStatus" style="margin-left:10px;font-size:0.85rem;"></span>
     </div>
 </div>
 
@@ -98,7 +98,7 @@
     <button onclick="resetDefaults()" title="将会全部归 0 " style="background:#888;">🔄 恢复默认</button>
     <button onclick="window.location.href='update.html'" title="点击进入安装页面">📥 装记忆库</button>
     <p class="info" id="status">修改后点保存生效。</p>
-    <a href="index.html" style="margin-left:16px;">← 返回首页</a> <a href="backup.html">库管理</a> <a href="fapai.html">发牌机</a> 
+    <a href="index.html" style="margin-left:100px;">← 返回首页</a>
     <script>
     const API_BASE = 'https://api.k9a8.com';
     const userId = localStorage.getItem('bac_user_id') || '';
