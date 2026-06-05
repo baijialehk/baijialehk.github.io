@@ -73,6 +73,11 @@
     </div>
 </div>
 
+    <button class="green" onclick="saveSettings()" title="保存全部全局设置 ">💾 保存设置</button>
+    <button onclick="resetDefaults()" title="将会全部归 0 " style="background:#888;">🔄 恢复默认</button>
+    <button onclick="window.location.href='update.html'" title="点击进入安装页面">📥 装记忆库</button>
+    <p class="info" id="status">修改后点保存生效。</p>
+	
 <div class="section">
     <div class="section-title">🔒 修改密码</div>
     <div class="row pwd">
@@ -94,10 +99,6 @@
     </div>
 </div>
 
-    <button class="green" onclick="saveSettings()" title="保存全部全局设置 ">💾 保存设置</button>
-    <button onclick="resetDefaults()" title="将会全部归 0 " style="background:#888;">🔄 恢复默认</button>
-    <button onclick="window.location.href='update.html'" title="点击进入安装页面">📥 装记忆库</button>
-    <p class="info" id="status">修改后点保存生效。</p>
     <a href="index.html" style="margin-left:100px;">← 返回首页</a>
     <script>
     const API_BASE = 'https://api.k9a8.com';
