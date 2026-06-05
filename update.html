@@ -2,68 +2,35 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>记忆库更新</title>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     <style>
-        /* 关键修改：body 满屏，内容用内层容器限制宽度 */
-        body { 
-            background:#0a0a0a; 
-            color:#ddd; 
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; 
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        
-        /* 内容容器：控制阅读宽度，居中显示 */
-        .page-content {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 8px 5px 5px 5px;
-        }
-        
-        button { 
-            background:#8b5cf6; 
-            color:#fff; 
-            border:none; 
-            padding:12px 28px; 
-            border-radius:8px; 
-            cursor:pointer; 
-            font-size:1rem; 
-            font-weight:700; 
-        }
+        body { background:#0a0a0a; color:#ddd; font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; max-width:580px; margin:auto; padding:8px 5px; }
+        button { background:#8b5cf6; color:#fff; border:none; padding:12px 28px; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700; }
         button:hover { filter:brightness(1.2); }
-        #progress-bar { 
-            width: 100%; 
-            max-width: 500px; 
-            height:24px; 
-            background:#333; 
-            border-radius:12px; 
-            margin-top:16px; 
-            display:none; 
-            overflow:hidden; 
-            margin-left: auto;
-            margin-right: auto;
-        }
+        #progress-bar { width:500px; height:24px; background:#333; border-radius:12px; margin-top:16px; display:none; overflow:hidden; }
         #progress-fill { width:0%; height:100%; background:linear-gradient(90deg,#8b5cf6,#2ecc71); border-radius:12px; transition:width 0.3s; }
-        .info { color:#999; font-size:0.85rem; margin-top:8px; }
-        a { color:#8b5cf6; display:inline-block; text-decoration:none; margin:0 8px;}
-        .links { margin-top: 16px; }
-        h2 { font-size:14pt; color:#f0c060; margin:0 0 16px 0; }
+        .info { color:#999; font-size:0.85rem; margin:8px 0; }
+        a { color:#8b5cf6; display:block; text-decoration:none;}		
+		.card { margin-top: 3rem;  }
+		.card nav { display:flex; justify-content:center; gap:20px; flex-wrap:nowrap;font-size:10pt; }
+		.card nav a { color:#8b5cf6;text-decoration:none; }
+		.card .end-detail { margin-top: 0.5rem; text-align: center; font-size: 0.7rem; letter-spacing: 1px; color: #5b6e8c; border-top: 1px dashed #3a3220; padding-top: 0.5rem; }
+		.card .end-detail a { color:#8b5cf6;text-decoration:none; }
     </style>
     <link href="banner.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
-<div class="page-content">
     <!-- K9A8 Banner 组件 -->
     <div class="k9a8-banner">
         <div class="brand-core">
             <div class="domain-magic">
-                <a href="index.html" title="百家乐Ai智能辅助推演系统主页"><span class="domain">k9A8</span><span class="domain-tld">.com</span></a>
+                <a href="https://www.k9a8.com/" title="百家乐Ai智能辅助推演系统主页"><span class="domain">k9A8</span><span class="domain-tld">.com</span></a>
                 <span class="card-symbol">♠️</span>
             </div>
             <div class="badge-9point">✦ 百家乐Ai智能辅助推演系统 ✦</div>
@@ -95,19 +62,30 @@
             </div>
         </div>
     </div>
-
+    <br>
     <div style="text-align:center;">
-        <h2>📥 大数据更新</h2>
+        <h2 style="font-size:14pt;color: #f0c060; ">📥 大数据更新</h2>
         <button onclick="startUpdate()" title="点击即会自动安装">🔄 安装百万牌局记忆库</button>
         <div id="progress-bar"><div id="progress-fill"></div></div>
-        <div class="info" id="progress-text">* 普通用户只有两个记忆数据库试用，高级用户可以安装8大记忆库</div>
-        <div class="links">
-            <a href="index.html">← 返回首页</a>
-            <a href="setting.html">配置页</a>
-        </div>
+        <div class="info" id="progress-text">* 普通用户仅两个记忆数据库试用，高级用户有完整8大记忆库</div>
+		<button onclick="clearAllMemory()" style="background:#e74c3c; margin-top:12px;">🗑 一键清空所有记忆库</button>
+		<div class="card">
+			<nav>
+				<a href="index.html">🏠 首页</a>
+				<a href="setting.html">⚙️ 设置配置</a>
+				<a href="readme.html">🧠 系统说明</a>
+				<a href="#"  onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;">👑 升级账户</a>
+			</nav>
+			<div  class="end-detail">
+				<footer>
+					♣ K9A8.com — 百家乐智能辅助推演系统 · 民主决策 · 多维验证 · 动态学习<br>
+					系统为辅助工具，请理性游戏，量力而行。所有功能基于历史统计和大数据模拟，不保证盈利。<br>
+					© 理性玩家议会 | 记忆库已累计模拟超百万局牌靴 | 梅花易数☯2.0易理引擎
+				</footer>
+			</div>					
+		</div>
     </div>
-</div>
-
+	
 
     <script>
 		const userId = localStorage.getItem('bac_user_id') || '';
@@ -181,6 +159,14 @@
                 btn.textContent = '🔄 重试';
             }
         }
+		
+		
+		function clearAllMemory() {
+			if (!confirm('确定要清空所有记忆库吗？此操作不可恢复！')) return;
+			const keys = Object.values(KEYS);
+			keys.forEach(k => localStorage.removeItem(k));
+			alert('已清空 ' + keys.length + ' 个记忆库');
+		}
     </script>
 </body>
 </html>

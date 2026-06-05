@@ -22,6 +22,7 @@
         .row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; }
         .row label { flex:1; font-size:0.85rem; }
         .row input { width:50px; text-align:center; background:#222; color:#ddd; border:1px solid #333; border-radius:4px; padding:4px; }
+        .pwd input { width:150px; }
         button { background:#8b5cf6; color:#fff; border:none; padding:10px 15px; border-radius:6px; cursor:pointer; font-weight:700; margin:8px 2px; }
         button.green { background:#2ecc71; }
         .info { color:#999; font-size:0.75rem; margin-top:8px; }
@@ -69,6 +70,27 @@
 	<div class="row">
         <label>智能决策（0=按票多 1=智能反向下注）</label>
         <input type="number" id="set_SMART_DECIDER" value="0" min="0" max="1">
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">🔒 修改密码</div>
+    <div class="row pwd">
+        <label>旧密码</label>
+        <input type="password" id="oldPassword" placeholder="输入旧密码">
+    </div>
+    <div class="row pwd">
+        <label>新密码</label>
+        <input type="password" id="newPassword" placeholder="6-15位">
+    </div>
+    <div class="row pwd">
+        <label>确认新密码</label>
+        <input type="password" id="confirmPassword" placeholder="再次输入新密码">
+    </div>
+    <div class="row">
+        <label></label>
+        <button onclick="changePassword()">修改密码</button>
+        <span id="pwdStatus" style="margin-left:10px;"></span>
     </div>
 </div>
 
@@ -300,7 +322,67 @@
         }
 				document.getElementById('loading-overlay').style.display = 'none';   //关闭等待画面
     }
+	
+	async function changePassword() {
+		const oldPwd = document.getElementById('oldPassword').value;
+		const newPwd = document.getElementById('newPassword').value;
+		const confirmPwd = document.getElementById('confirmPassword').value;
+		const status = document.getElementById('pwdStatus');
 
+		if (!oldPwd || !newPwd || !confirmPwd) {
+			status.textContent = '❌ 请填写所有密码字段';
+			status.style.color = '#e74c3c';
+			return;
+		}
+		if (newPwd !== confirmPwd) {
+			status.textContent = '❌ 两次新密码不一致';
+			status.style.color = '#e74c3c';
+			return;
+		}
+		if (newPwd.length < 6 || newPwd.length > 15) {
+			status.textContent = '❌ 新密码需要6-15位';
+			status.style.color = '#e74c3c';
+			return;
+		}
+        if (!userId) {
+            status.textContent = '❌ 请先在首页登录';
+            return;
+        }		
+			document.getElementById('loading-overlay').style.display = 'flex';   //显示等待画面
+
+		try {
+			const res = await fetch(`${API_BASE}/api/changepwd`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					userId,
+					userPwd,
+					oldPassword: oldPwd,
+					newPassword: newPwd
+				})
+			});
+			const data = await res.json();
+			if (res.ok) {
+				status.textContent = '✅ ' + data.msg;
+				status.style.color = '#27ae60';
+				// 更新本地存储的密码哈希
+				localStorage.setItem('bac_user_pwd', hashPassword(newPwd));
+				document.getElementById('oldPassword').value = '';
+				document.getElementById('newPassword').value = '';
+				document.getElementById('confirmPassword').value = '';
+			} else {
+				status.textContent = '❌ ' + (data.error || '修改失败');
+				status.style.color = '#e74c3c';
+			}			
+			document.getElementById('loading-overlay').style.display = 'none';   //关闭等待画面
+		} catch (e) {
+			status.textContent = '❌ 网络错误';
+			status.style.color = '#e74c3c';
+			document.getElementById('loading-overlay').style.display = 'none';   //关闭等待画面
+		}
+		
+	}
+	
     async function resetDefaults() {
         // 重置为默认值，直接修改 cachedConfig
         cachedConfig.VOTE_WEIGHTS = {};

@@ -289,6 +289,12 @@
             transform: translateY(-3px) rotate(0deg);
             box-shadow: 0 8px 0 #b97f2e;
         }
+		
+		.card { margin-top: 3rem;  }
+		.card nav { display:flex; justify-content:center; gap:20px; flex-wrap:nowrap;font-size:10pt; }
+		.card nav a { color:#8b5cf6;text-decoration:none; }
+		.card .end-detail { margin-top: 0.5rem; text-align: center; font-size: 0.7rem; letter-spacing: 1px; color: #5b6e8c; border-top: 1px dashed #3a3220; padding-top: 0.5rem; }
+		.card .end-detail a { color:#8b5cf6;text-decoration:none; }
     </style>
 </head>
 <body>
@@ -338,10 +344,23 @@
         </div>
     </header>
 
-    <!-- 下方额外增加一段微妙的艺术描述 让banner更有代入感 但主体仍是logo banner -->
-    <div style="margin-top: 1rem; text-align: center; font-size: 0.7rem; letter-spacing: 1px; color: #b9aa7a; border-top: 1px dashed #3a3220; padding-top: 1rem;">
-        <span>♣ K9A8.COM — 传奇牌型镇场，每一局都承载必胜信念 ♦</span>
-    </div>
+    <div class="card">
+			<nav>
+				<a href="index.html">🏠 首页</a>
+				<a href="update.html">📚 记忆库</a>
+				<a href="setting.html">⚙️ 设置</a>
+				<a href="readme.html">🧠 系统说明</a>
+				<a href="#"  onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;">👑 升级账户</a>
+			</nav>
+			<div  class="end-detail">
+				<footer>
+					♣ <a href="https://k9a8.com/" title="百家乐Ai智能辅助推演系统国际主页">K9A8.com</a> — 百家乐智能辅助推演系统 · 民主决策 · 多维验证 · 动态学习<br>
+					系统为辅助工具，请理性游戏，量力而行。所有功能基于历史统计和大数据模拟，不保证盈利。<br>
+					© 理性玩家议会 | 记忆库已累计模拟超百万局牌靴 | 梅花易数☯2.0易理引擎
+				</footer>
+			</div>					
+	</div>
+	
 </div>
 </body>
 </html>

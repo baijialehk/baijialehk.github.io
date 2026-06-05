@@ -79,7 +79,11 @@
         .vote-detail .vote-title { font-weight:700; margin-bottom:6px; color:var(--accent); }
         .vote-detail .vote-tier { color:#999; margin-top:4px; }
         .vote-detail .vote-item { margin-left:12px; }
-        .vote-detail .vote-result { margin-top:8px; padding-top:6px; border-top:1px solid var(--border); font-weight:700; 
+        .vote-detail .vote-result { margin-top:8px; padding-top:6px; border-top:1px solid var(--border); font-weight:700; }
+		.card nav { display:flex; justify-content:center; gap:20px; flex-wrap:nowrap;font-size:10pt; }
+		.card nav a { color:#8b5cf6;text-decoration:none; }
+		.card .end-detail { margin-top: 0.5rem; text-align: center; font-size: 0.7rem; letter-spacing: 1px; color: #5b6e8c; border-top: 1px dashed #3a3220; padding-top: 0.5rem; }
+		.card .end-detail a { color:#8b5cf6;text-decoration:none; }
     </style>
 	
     <link href="banner.css" rel="stylesheet" type="text/css" />
@@ -92,7 +96,7 @@
 	<div class="k9a8-banner">
 		<div class="brand-core">
 			<div class="domain-magic">
-				<span class="domain">k9A8</span><span class="domain-tld">.com</span>
+				<a href="https://www.k9a8.com/" title="百家乐Ai智能辅助推演系统国内主页"><span class="domain">k9A8</span><span class="domain-tld">.com</span></a>
                 <span class="card-symbol">♠️</span>
 			</div>
 			<div class="badge-9point">✦ 百家乐Ai智能辅助推演系统 ✦</div>
@@ -244,13 +248,20 @@
         </div>
 
 		<div class="card">
-					<nav style="display:flex; justify-content:center; gap:50px; flex-wrap:wrap;font-size:10pt; ">
-						<!-- <a href="index.html" style="color:#8b5cf6;text-decoration:none;">🏠 首页</a> -->
-						<a href="update.html" style="color:#8b5cf6;text-decoration:none;">📚 记忆库</a>
-						<a href="setting.html" style="color:#8b5cf6;text-decoration:none;">⚙️ 设置配置</a>
-						<a href="readme.html" style="color:#8b5cf6;text-decoration:none;">🧠 系统说明</a>
-						<a href="#" style="color:#8b5cf6;text-decoration:none;"  onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;">👑 升级账户</a>
-					</nav>     
+			<nav>
+				<!-- <a href="index.html">🏠 首页</a> -->
+				<a href="update.html">📚 记忆库</a>
+				<a href="setting.html">⚙️ 设置配置</a>
+				<a href="readme.html">🧠 系统说明</a>
+				<a href="#"  onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;">👑 升级账户</a>
+			</nav>
+			<div  class="end-detail">
+				<footer>
+					♣ <a href="https://k9a8.com/" title="百家乐Ai智能辅助推演系统国际主页">K9A8.com</a> — 百家乐智能辅助推演系统 · 民主决策 · 多维验证 · 动态学习<br>
+					系统为辅助工具，请理性游戏，量力而行。所有功能基于历史统计和大数据模拟，不保证盈利。<br>
+					© 理性玩家议会 | 记忆库已累计模拟超百万局牌靴 | 梅花易数☯2.0易理引擎
+				</footer>
+			</div>					
 		</div>
 		
     </div>
@@ -271,7 +282,7 @@
 				➡️ 结合经验以及临场判断，加上信号的票数权重，会让结果更加精准</br>	
 				➡️ 自定义追踪信号连续输赢，大部分信号很少连输连赢4次</br>
 			➡️ 想无限畅用、解锁全部信号权重与大数据？🎰想提升胜率？ </br>
-			 --> <button onclick="window.location.href='readme.html'" title="点击查看详细的系统说明手册" style="margin-left:10px;">详细系统说明</button> <button onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;" title="点击升级高级用户,尊享顶级推演体验！" style="background:#e74c3c; margin-left:10px;">升级👑高级用户</button></br>
+			 --> <button onclick="window.location.href='readme.html'" title="点击查看详细的系统说明手册" style="margin-left:5px;">详细系统说明</button>  <button onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;" title="点击升级高级用户,尊享顶级推演体验！" style="background:#e74c3c; margin-left:10px;">升级👑高级用户</button></br>
 		</font>
 	</div>
 	
