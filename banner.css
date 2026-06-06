@@ -11,6 +11,18 @@
     overflow: hidden;
     margin-bottom: 0rem;
 }
+.k9a8-banner::before {
+	content: "♠ ♥ ♣ ♦♠ ♥ ♣ ♦♠ ♥ ♣ ♦";
+	font-size: 9rem;
+	position: absolute;
+	top: -45px;
+	right:-20px;
+	opacity: 0.03;
+	font-family: 'Courier New', monospace;
+	pointer-events: none;
+	letter-spacing: -20px;
+	color: #ffd966;
+}
 .brand-core {
     display: flex;
     align-items: baseline;
