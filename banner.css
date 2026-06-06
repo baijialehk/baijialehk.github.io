@@ -38,9 +38,7 @@
     border-radius: 100px;
     border-left: 4px solid #F5B042;
 }
-.domain-magic a {
-	text-decoration:none;
-}
+.domain-magic a { text-decoration:underline; }
 .domain {
     font-size: 2rem;
     font-weight: 800;
@@ -124,7 +122,6 @@
     .brand-core { justify-content: left; }
     .winning-meaning { align-self: center; }
     .domain { font-size: 2rem; }
-	.domain-magic a { text-decoration:underline; }
     .domain-tld { font-size: 1.4rem; }
     .hand-demo .cardLogo { font-size: 1.2rem; padding: 0.1rem 0.6rem; }
     .plus-sign { font-size: 1.2rem; }	
