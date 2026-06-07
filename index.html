@@ -277,7 +277,7 @@
             </div>
         </div>
 		
-		<div class="card" id="login-card">
+		<div class="card" id="login-card"  style="display:none;">
 			<div class="card-header">🔐 登录 | 注册</div>
 			<div class="controls-row" style="margin-bottom:6px;">
 				<input id="login-phone" placeholder="手机号码" style="flex:1;">
@@ -291,16 +291,6 @@
 			</div>
 			<div id="login-status" style="margin-top:8px; font-size:0.85rem; color:#f0c060;">🚨 注册四个都要填，登录只需填手机与一个密码</div>
 		</div>
-
-		<!--<div class="card" id="stats-card" style="display:none;">
-			<div class="card-header">📈 预测表现</div>
-			<div class="winrate-bar">
-				<span style="font-weight:600; color:var(--text-secondary);">胜率</span>
-				<span class="winrate-value" id="winrate-percent">0%</span>
-				<span class="winrate-detail" id="winrate-detail">预测 0 次 | 命中 0 次</span>
-				<button id="btn-reset" class="secondary" style="margin-left:auto;">🔄 重置牌局</button>
-			</div>
-		</div>   -->
 
         <!-- 历史 -->
         <div class="card">
@@ -331,8 +321,10 @@
 		
     </div>
 	
+	
     <script src="app.js"></script>
     <script src="pako.min.js"></script>
+	
 	
 	<div id="user0" style="display:none; ">
 		-------- <strong>✅ 登入成功  </strong> --------
@@ -423,6 +415,7 @@
 		</div>
 	</div>	
 	<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+	
 	
 	<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4a306dd8e28f41f3b024db43b3ef7d7c"}'></script><!-- End Cloudflare Web Analytics -->
 	
