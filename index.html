@@ -87,6 +87,21 @@
     </style>
 	
     <link href="banner.css" rel="stylesheet" type="text/css" />
+	
+	<!-- 基础 Web App Manifest -->
+	<link rel="manifest" href="/manifest.json">
+
+	<!-- iOS Safari 全屏支持 -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="百家乐推演K9A8">
+
+	<!-- iOS 桌面图标（需要准备好对应的图片） -->
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+	<!-- 主题色（支持 Chrome 地址栏变色） -->
+	<meta name="theme-color" content="#0a0a0a">
 </head>
 <body>
 
@@ -198,15 +213,63 @@
                     <!-- <input type="checkbox" class="road-checkbox" id="chk-resonance" checked> -->
                 </div>
                 <div class="final-judgment" id="final-judgment">等待分析…</div>
-                <div class="vote-detail" id="vote-detail" style="">
-				<strong style="font-size:13pt">🀄百家乐智能辅助推演系统 ♠️</strong></br></br>					
-					---- <strong style="font-size:10pt;color: #dd9; ">民主决策，多维验证，动态学习</strong> ----</br></br>
-					系统模拟"理性玩家议会"：众多预测信号各自独立判断，按权重投票，最终由决策者玩家决定方向。</br></br>
-					不依赖单一策略，不盲从固定规则，用数据说话，用逻辑验证，用经验修正。</br></br>
-					辅助记忆、回忆、分析、判断大路小路三珠路等等数十种形态的可能性，并会储存玩家的经验，越用越聪明。</br></br>
-					智能化的从众多信息中触发玩家的经验与灵感，在复杂多变的百家乐游戏中一击即中、提高胜率。</br></br>
-					 ------- <font style="font-size:10pt;color: #d99; ">仅供娱乐请勿用于赌博！</font>-------</br>
-					</br>
+                <div class="vote-detail" id="vote-detail">
+				      <div style="font-size:0.8rem;color: #ddd;">
+						<strong style="font-size:13pt">🀄百家乐智能辅助推演系统 ♠️</strong></br></br>					
+						---- <strong style="color: #dd9; ">民主决策，多维验证，动态学习</strong> ----</br></br>
+						🌟系统模拟"理性玩家议会"：众多预测信号各自独立判断，按权重投票，最终由决策者玩家决定方向。</br></br>
+						🌟不依赖单一策略，不盲从固定规则，用数据说话，用逻辑验证，用经验修正。</br></br>
+						🌟辅助记忆、回忆、分析、判断大路小路三珠路等数十种形态的可能性，并会储存玩家的经验，越用越聪明。</br></br>
+						🌟智能化的从众多信息中触发玩家的经验与灵感，在复杂多变的百家乐游戏中一击即中、提高胜率。</br></br>
+						 ------- <font style="color: #d99; ">仅供娱乐请勿用于赌博！</font>-------
+					 </div>
+							 
+					 <!-- 安装引导按钮 + 智能提示 -->
+						<div style="text-align:center; margin: 10px 10px;">
+						  <button id="installBtn" style="background: linear-gradient(145deg,#1f2a3e,#0a0c14); border:0px solid #3498db; color:#ccc; padding:10px 20px; border-radius:60px; font-size:0.8rem; font-weight:bold; cursor:pointer; width:auto; min-width:160px;">
+							📲 添加到手机桌面
+						  </button>
+						</div>
+
+						<div id="installGuide" style="display:none; background:#1e1e2a; margin:0 16px 20px 16px; padding:16px; border-radius:20px; border-left:4px solid #F5B042; font-size:0.75rem; color:#ddd;">
+						  <span id="guideText"></span>
+						  <div style="text-align:right; margin-top:10px;">
+							<button onclick="document.getElementById('installGuide').style.display='none'" style="background:none; border:none; color:#F5B042;">知道啦 ✨</button>
+						  </div>
+						</div>
+
+						<script>
+						  (function() {
+							var btn = document.getElementById('installBtn');
+							var guideDiv = document.getElementById('installGuide');
+							var guideText = document.getElementById('guideText');
+							var ua = navigator.userAgent.toLowerCase();
+							var isAndroid = ua.indexOf('android') > -1;
+							var isIos = /iphone|ipad|ipod/.test(ua);
+							var isMobile = isAndroid || isIos;
+
+							// 如果不支持安装提示，直接显示手动引导
+							btn.addEventListener('click', function() {
+							  if (isAndroid) {
+								guideText.innerHTML = '📱 Android 用户：<br><br>1️⃣ 点击右上角 <strong>⋮</strong> 菜单<br>2️⃣ 选择 <strong>「添加到主屏幕」</strong><br>3️⃣ 确认名称后点击 <strong>「添加」</strong><br><br>✨ 下次从桌面图标直接打开，就像 App 一样！';
+								guideDiv.style.display = 'block';
+							  } 
+							  else if (isIos) {
+								guideText.innerHTML = '📱 iPhone / iPad 用户：<br><br>1️⃣ 点击底部 <strong>「分享」图标</strong>（方框+箭头）<br>2️⃣ 向下滑动，选择 <strong>「添加到主屏幕」</strong><br>3️⃣ 点击右上角 <strong>「添加」</strong><br><br>🌟 完成后桌面会出现 K9A8 图标。';
+								guideDiv.style.display = 'block';
+							  } 
+							  else {
+								alert('请在手机浏览器（Chrome / Safari）中打开此页面');
+							  }
+							});
+
+							// 如果已经是桌面模式（全屏 Web App），隐藏按钮或提示
+							if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+							  if(btn) btn.style.display = 'none';
+							}
+						  })();
+						</script>
+						
 				</div>			
             </div>
         </div>
@@ -269,24 +332,26 @@
     <script src="pako.min.js"></script>
 	
 	<div id="user0" style="display:none; ">
-		✅<strong>登入成功  </strong> 
-		<font style="font-size:15px;line-height:1.8;">
-			<strong style="font-size:11pt;color: #dd9; ">🆓 免费用户</strong> <strong style="font-size:10pt;color: #dd9;">		欢迎试用本推演系统。</strong></br>
-			 -- <strong style="font-size:11pt;color: #e74c3c;">免费用户</strong>: ⚠️每轮有限定局数，无法设置权重、信号追踪等配置，没有配备大数据库，只能靠自己手动积累。</br>
-				<strong>升级</strong> - <strong style="color: var(--gold);">👑高级用户</strong> - 有以下优势： -</br>
+		-------- <strong>✅ 登入成功  </strong> --------
+		<div style="font-size:15px;line-height:1.8;">
+			<strong style="font-size:11pt;color: #dd9; ">🆓 免费用户</strong> :  ⚠️每轮有限定局数，无法设置权重、信号追踪等配置，没有配备大数据库，只能靠自己手动积累。</br></br>
+			
+				<strong>升级</strong> - <strong style="color: var(--gold);">👑高级用户</strong> - 有以下优势： </br>
 				➡️ 无任何功能限制，自由设定60多种信号的权重</br>
 				➡️ 拥有万+轮牌局的记忆库（每轮按正规八副牌平均75局做记录）并持续增加更新</br>
 				➡️ 收揽了百家乐游戏的全部形态与路数，任何牌型都能触发供你选择</br>
 				➡️ 智能模式辅助判断转折点，提供多维度参考，避免情绪化游戏</br>
 				➡️ 结合经验以及临场判断，加上信号的票数权重，会让结果更加精准</br>	
-				➡️ 自定义追踪信号连续输赢，大部分信号很少连输连赢4次</br>
-			🔥 想无限畅用、解锁全部信号权重与大数据？🎰想提升胜率？ </br>
+				➡️ 自定义追踪信号连续输赢，大部分信号很少连输连赢4次</br></br>
+				
+			🔥 无限畅用、解锁全部信号权重与完整大数据？🎰提升胜率？ </br>
 			 --> <button onclick="window.location.href='readme.html'" title="点击查看详细的系统说明手册" style="margin-left:5px;">详细系统说明</button>  <button onclick="document.getElementById('vote-detail').innerHTML = document.getElementById('userUP').innerHTML;" title="点击升级高级用户,尊享顶级推演体验！" style="background:#e74c3c; margin-left:10px;">升级👑高级用户</button></br>
-		</font>
+			 
+		</div>
 	</div>
 	
 	<div id="user1" style="display:none; ">
-			✅<strong>登入成功  </strong> </br></br>
+		-------- ✅ <strong>登入成功  </strong> --------</br></br>
 		<strong style="color: #e74c3c;font-size:11pt;">👑 高级用户</strong> -- <strong style="font-size:10pt;color: #dd9;">欢迎使用本系统，你已拥有全部功能的终身使用权！</strong></br></br>
 		-- <strong style="color: var(--gold);">现在你可以：</strong> </br> </br>
 		<button onclick="window.location.href=\'setting.html\'" title="点击进入配置页面" style="margin-left:10px;background:#2ecc71;">⚙️ 投票追踪配置</button> 

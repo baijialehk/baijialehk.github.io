@@ -1,0 +1,23 @@
+{
+  "name": "K9A8百家乐智能辅助推演系统",
+  "short_name": "百家乐推演",
+  "description": "议会投票 · 多维记忆库 · 梅花易数2.0引擎 · 60+智能信号",
+  "start_url": "index.html",
+  "display": "standalone",
+  "theme_color": "#0a0a0a",
+  "background_color": "#0a0a0a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
