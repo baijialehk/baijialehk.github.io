@@ -180,21 +180,29 @@
             ['A','B','C','D','E','F','G','H','I'].forEach(type => {
                 const mem = getMemory(type);
                 const entries = Object.entries(mem).sort((a,b) => b[1].total - a[1].total);
+                const filtered = entries.filter(([k]) => k !== '_shoeRates');
+				const shoeRates = entries.find(([k]) => k === '_shoeRates');
                 const ta = document.getElementById(`preview-${type}`);
                 const info = document.getElementById(`info-${type}`);
                 if (!ta) return;
-                if (entries.length === 0) {
+                if (filtered.length === 0 && !shoeRates) {
                     ta.value = '暂无数据。';
                     info.textContent = '';
                     return;
                 }
-                const text = entries.map(([k,v]) => {
-				const streak = v.streak !== undefined ? ` | 连${v.streak > 0 ? '赢' : '输'}${Math.abs(v.streak)}` : '';
-				const rev = v.reverseCount > 0 ? ` | 反向剩余${v.reverseCount}局` : '';
-				return `${k} | 总${v.total}次 | B:${v.B}(${Math.round(v.B/v.total*100)}%) P:${v.P}(${Math.round(v.P/v.total*100)}%)${streak}${rev}`;
+				let text = filtered.map(([k,v]) => {
+					//if (k === '_shoeRates') return;
+					const streak = v.streak !== undefined ? ` | 连${v.streak > 0 ? '赢' : '输'}${Math.abs(v.streak)}` : '';
+					const rev = v.reverseCount > 0 ? ` | 反向剩余${v.reverseCount}局` : '';
+					return `${k} | 总${v.total}次 | B:${v.B}(${Math.round(v.B/v.total*100)}%) P:${v.P}(${Math.round(v.P/v.total*100)}%)${streak}${rev}`;
 				}).join('\n');
+				
+				if (shoeRates) {
+					const rates = shoeRates[1];
+					text += '\n📊 近轮胜率: ' + rates.map(r => r.rate + '%').join(' → ');
+				}
                 ta.value = text;
-                info.textContent = `共 ${entries.length} 条记录`;
+                info.textContent = (filtered.length > 0 ? '共 ' + filtered.length + ' 条记录' : '暂无记忆记录') + (shoeRates ? ' | 胜率追踪中' : '');
             });
         }
 
