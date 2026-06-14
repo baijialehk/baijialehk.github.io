@@ -20,8 +20,9 @@ body {
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 15px 12px; }
 .card-header { font-size: 1rem; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 .road-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px; margin: 2px 0; border-radius: 6px; background: rgba(255,255,255,0.02); }
-.road-label { font-weight: 600; min-width: 80px; color: var(--text-secondary); font-size: 0.9rem; }
+.road-label { font-weight: 600; min-width: 60px; color: var(--text-secondary); font-size: 0.9rem; }
 .road-value { flex: 1; font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.85rem; letter-spacing: 0.5px; }
+.road-value-clip {display: inline-block;  max-width: 100%; overflow-x: hidden; white-space: nowrap; direction: rtl; text-align: left; vertical-align: middle;}
 .road-value.red { color: var(--red); }
 .road-value.blue { color: var(--blue); }
 .road-value.gold { color: var(--gold); }
