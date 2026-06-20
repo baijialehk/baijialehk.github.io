@@ -69,7 +69,7 @@ hr { border-color: var(--border); margin: 8px 0; }
 .card .end-detail a { color:#8b5cf6;text-decoration:none; }
 
 .pick-row { display:flex; gap:4px; margin:4px 0; flex-wrap:wrap; }
-.pick-cell { width:25px; height:25px; display:flex; align-items:center; justify-content:center; 
+.pick-cell { width:26px; height:26px; display:flex; align-items:center; justify-content:center; 
     border:1px solid #555; border-radius:4px; cursor:pointer; font-weight:bold; font-size:1.2rem; font-family: 'Courier New', monospace;	margin-left:3px;}
 .pick-cell:hover {  transform: translateY(-3px) rotate(0deg); box-shadow: 0 2px 1px #b97f2e; }
 .pick-cell.black { background:#ddd; color:#1a1a1a; }
