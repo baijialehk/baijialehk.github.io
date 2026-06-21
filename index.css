@@ -38,6 +38,7 @@ body {
 .final-judgment.blue-bg { border-color: var(--blue); color: var(--blue); }
 .db-row { display: flex; gap: 12px; }
 .db-row .road-value { flex: 1; text-align: center; }
+.header-display { display:none; font-size:0.9rem; margin-left:8px; }
 .inputHint { color:#f0c060; font-size:0.85rem; margin-bottom:8px; }
 .selectedDisplay { margin:5px 0; font-size:0.9rem; }
 .controls-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
@@ -72,7 +73,7 @@ hr { border-color: var(--border); margin: 8px 0; }
 .card .end-detail { margin-top: 0.5rem; text-align: center; font-size: 0.7rem; letter-spacing: 1px; color: #5b6e8c; border-top: 1px dashed #3a3220; padding-top: 0.5rem; }
 .card .end-detail a { color:#8b5cf6;text-decoration:none; }
 
-.pick-row { display:flex; gap:4px; margin:8px 0 0 0; flex-wrap:wrap; }
+.pick-row { display:flex; gap:4px; margin:8px 0 0 0; flex-wrap:wrap; justify-content:center;}
 .pick-cell { width:28px; height:28px; display:flex; align-items:center; justify-content:center; 
     border:1px solid #555; border-radius:4px; cursor:pointer; font-weight:bold; font-size:1.2rem; font-family: 'Courier New', monospace;	margin-left:0.6rem;}
 .pick-cell:hover {  transform: translateY(-3px) rotate(0deg); box-shadow: 0 2px 1px #b97f2e; }
@@ -96,5 +97,5 @@ box-shadow: 1px 2px 0px #b97f2e;	transform: rotate(3deg);	transition: transform 
 #btn-back:hover {    background: rgba(245,176,66,0.15);    border-color: #f5b042;}
 
 @media (max-width: 850px) {
-.pick-cell { margin-left:0.18rem;}
+.pick-cell { margin-left:0.2rem;}
 }
