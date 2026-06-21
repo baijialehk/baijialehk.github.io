@@ -85,26 +85,27 @@
 				<span id="header-selected-display" style="display:none; font-size:0.9rem; margin-left:8px;"></span>
 				<button id="btn-back" class="secondary">< 回退</button>
 			</div>
-			<div id="input-hint" style="color:#f0c060; font-size:0.85rem; margin-bottom:8px;">请选择 闲 第一张牌、色</div>
+			<div class="inputHint" id="input-hint">请选择 闲 第一张牌、色</div>
 			<div id="pick-area">
 				<div class="pick-row" id="row-black"></div>
 				<div class="pick-row" id="row-red"></div>
 			</div>
-			<div id="selected-display" style="margin:10px 0; font-size:0.9rem;"></div>
-			<div style="display:flex; gap:8px; margin-top:8px;">
-			<div class="controls-row">
-                <label>台号</label>
-                <input id="table-num" type="number" min="1" max="99" value="1" style="width:45px; background:#222; color:#ddd; border:1px solid #333; border-radius:4px; padding:5px;">
-                <label>八字</label>
-                <select id="birth-element" style="background:#222; color:#ddd; border:1px solid #333; border-radius:4px; padding:5px;">
-                    <option value="金">金</option>
-                    <option value="木">木</option>
-                    <option value="水">水</option>
-                    <option value="火" selected>火</option>
-                    <option value="土">土</option>
-                </select>
-            </div>
-				<button id="btn-submit2" style="display:none;" title="提交闲庄牌面点数">✅ 提交</button>
+			<div class="selectedDisplay" id="selected-display"></div>
+			
+			<div style="display:flex; gap:8px; margin-left:8px;">
+				<div class="controls-row">
+					<label>台号</label>
+					<input class="tableNum" id="table-num" type="number" min="1" max="99" value="1">
+					<label>八字</label>
+					<select class="birthElement" id="birth-element">
+						<option value="金">金</option>
+						<option value="木">木</option>
+						<option value="水">水</option>
+						<option value="火" selected>火</option>
+						<option value="土">土</option>
+					</select>
+				</div>
+					<button id="btn-submit2" style="display:none; margin-left:10px;" title="提交闲庄牌面点数">✅ 提交</button>
 			</div>
 		</div>
 
