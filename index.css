@@ -77,7 +77,7 @@ hr { border-color: var(--border); margin: 8px 0; }
 .pick-cell { width:28px; height:28px; display:flex; align-items:center; justify-content:center; 
     border:1px solid #555; border-radius:4px; cursor:pointer; font-weight:bold; font-size:1.2rem; font-family: 'Courier New', monospace;	margin-left:0.6rem;}
 .pick-cell:hover {  transform: translateY(-3px) rotate(0deg); box-shadow: 0 2px 1px #b97f2e; }
-.pick-cell.black { background:#ddd; color:#000; }
+.pick-cell.black { background:#ddd; color:#111; }
 .pick-cell.red { background:#ddd; color: #A8001A; }
 .pick-cell.selected { border-color:#f0c060; box-shadow:0 0 6px #f0c060; }
 .pick-cell.disabled { opacity:0.3; pointer-events:none; }
