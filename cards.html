@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>卡密管理</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#1a1a2e; color:#e0e0e0; font-family:'Microsoft YaHei',sans-serif; padding:20px; max-width:800px; margin:0 auto; }
+        h1 { text-align:center; color:#e0b000; margin-bottom:20px; }
+        .tabs { display:flex; gap:10px; margin-bottom:15px; }
+        .tabs button { padding:8px 20px; background:#16213e; color:#e0e0e0; border:1px solid #444; border-radius:4px; cursor:pointer; }
+        .tabs button.active { background:#e0b000; color:#1a1a2e; }
+        table { width:100%; border-collapse:collapse; background:#16213e; border-radius:6px; overflow:hidden; }
+        th { background:#0f3460; color:#e0b000; padding:10px; text-align:left; }
+        td { padding:10px; border-bottom:1px solid #1a1a2e; }
+        .status { margin:10px 0; text-align:center; }
+    </style>
+</head>
+<body>
+    <h1>🎫 卡密管理</h1>
+    <div class="tabs">
+        <button id="btnUnused" class="active" onclick="loadCards('unused')">未使用</button>
+        <button id="btnUsed" onclick="loadCards('used')">已使用</button>
+    </div>
+    <div class="status" id="status"></div>
+    <table>
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+        const API_BASE = 'https://api.k9a8.com';
+        const userId = localStorage.getItem('bac_user_id') || '';
+        const userPwd = localStorage.getItem('bac_user_pwd') || '';
+
+        async function loadCards(type) {
+            document.getElementById('btnUnused').classList.toggle('active', type === 'unused');
+            document.getElementById('btnUsed').classList.toggle('active', type === 'used');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/cards?type=${type}&userId=${userId}&userPwd=${userPwd}`, {
+						headers: { 'X-FP': localStorage.getItem('bac_fp') || '' }
+					});
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error);
+
+                const head = document.getElementById('tableHead');
+                const body = document.getElementById('tableBody');
+
+                if (type === 'unused') {
+                    head.innerHTML = '<tr><th>未使用的卡密</th></tr>'; 
+                    body.innerHTML = data.cards.map(c => 
+                        `<tr align='center'><td>${c.code}</td></tr>`
+                    ).join('');
+                } else {
+                    head.innerHTML = '<tr><th>卡密</th><th>使用者</th><th>使用时间</th></tr>';
+                    body.innerHTML = data.cards.map(c => 
+                        `<tr><td>${c.code}</td><td>${c.usedBy || '未知'}</td><td>${c.usedAt ? new Date(c.usedAt).toLocaleString('zh-CN') : '未知'}</td></tr>`
+                    ).join('');
+                }
+                document.getElementById('status').textContent = `共 ${data.cards.length} 条`;
+            } catch(e) {
+                document.getElementById('status').textContent = '❌ ' + (e.message || '加载失败');
+            }
+        }
+
+        if (!userId) {
+            document.getElementById('status').textContent = '❌ 请先登录';
+        } else {
+            loadCards('unused');
+        }
+    </script>
+</body>
+</html>

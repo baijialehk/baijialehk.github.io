@@ -23,6 +23,7 @@
         .row label { flex:1; font-size:0.85rem; }
         .row input { width:50px; text-align:center; background:#222; color:#ddd; border:1px solid #333; border-radius:4px; padding:4px; }
         .pwd input { width:150px; }
+        .kami input { width:180px; }
         button { background:#8b5cf6; color:#fff; border:none; padding:10px 15px; border-radius:6px; cursor:pointer; font-weight:700; margin:8px 2px; }
         button.green { background:#2ecc71; }
         .info { color:#999; font-size:0.85rem; margin-top:8px; }
@@ -114,6 +115,19 @@
         <label></label>
         <button onclick="changePassword()">修改密码</button>
         <span id="pwdStatus" style="margin-left:10px;font-size:0.85rem;"></span>
+    </div>
+</div>
+
+<div class="section" id="cardSection" style="display:none;">
+    <div class="section-title">🎫 输入卡密 升级高级用户</div>
+    <div class="row kami">
+        <label>卡密</label>
+        <input type="text" id="cardKey" placeholder="输入8位卡密" maxlength="8" style="text-transform:uppercase">
+    </div>
+    <div class="row">
+        <label></label>
+        <button id="cardbutton" onclick="redeemCard()">升级用户</button>
+        <span id="cardStatus" style="margin-left:10px;"></span>
     </div>
 </div>
 
