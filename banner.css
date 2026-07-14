@@ -38,7 +38,7 @@
     border-radius: 100px;
     border-left: 4px solid #F5B042;
 }
-.domain-magic a { text-decoration:underline; }
+.domain-magic a { text-decoration:underline; text-decoration-color: #551a8b; }
 .domain {
     font-size: 2rem;
     font-weight: 800;
